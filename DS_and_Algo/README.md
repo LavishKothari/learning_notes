@@ -107,7 +107,7 @@
 
 # My specific Preparation (DataDump)
 ### isPrime
-```
+```java
 /*
 0 false
 1 false
