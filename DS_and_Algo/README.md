@@ -410,6 +410,7 @@ public class SubStrings {
 _________________________________
 
 ### Recursive function to print all permutations of a String
+* For `Sun` the output should be something like: `[Sun, Snu, uSn, unS, nuS, nSu]`
 
 ```java
 import java.util.*;
@@ -449,7 +450,74 @@ public class StringPermutation {
 _________________________________
 
 ### Printing all lexicographic permutations of String: non-recursive
-### Finding all the sub-sets of a given set (Power-set)
+_________________________________
+
+### Finding all the sub-sets of a given set (Power-set) - Recursive
+```java
+import java.util.*;
+
+class PowerSetRecursive {
+    public static void main(String[] args) {
+        System.out.println(new PowerSetRecursive().powerSet(Arrays.asList(new Integer[]{1, 2, 3})));
+    }
+
+    public List<List<Integer>> powerSet(List<Integer> set) {
+        return powerSet(set, 0);
+    }
+
+    private List<List<Integer>> powerSet(List<Integer> set, int counter) {
+        if (counter == set.size()) {
+            List<List<Integer>> list = new ArrayList<>();
+            list.add(new ArrayList<>()); // don't forget this
+            return list;
+        }
+        List<List<Integer>> list1 = powerSet(set, counter + 1);
+        List<List<Integer>> list2 = new ArrayList<>();
+        for (List<Integer> cl : list1) {
+            List<Integer> tempList = new ArrayList<>(cl);
+            tempList.add(set.get(counter));
+            list2.add(tempList);
+        }
+        list1.addAll(list2);
+        return list1;
+    }
+}
+```
+
+_________________________________
+
+### Finding all the sub-sets of a given set (Power-set) - Iterative
+
+```java
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+class PowerSetIterative {
+    public static void main(String[] args) {
+        System.out.println(new PowerSetIterative().powerSetIterative(Arrays.asList(new Integer[]{1, 2, 3})));
+    }
+
+    public List<List<Integer>> powerSetIterative(List<Integer> list) {
+        List<List<Integer>> result = new ArrayList<>();
+        int power = (1 << list.size());
+        for (int i = 0; i < power; i++) {
+            int ci = i;
+            List<Integer> tempList = new ArrayList<>();
+            int counter = 0;
+            while (ci != 0) {
+                if ((ci & 1) == 1)
+                    tempList.add(list.get(counter));
+                counter++;
+                ci >>= 1;
+            }
+            result.add(tempList);
+        }
+        return result;
+    }
+}
+```
+_________________________________
 ### Finding the number of ways in which `n` can be expressed as a sum of `k` different numbers
 ### Fibonacci numbers
 ### Sum of first `n` fibonacci numbers
