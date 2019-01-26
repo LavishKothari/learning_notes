@@ -143,6 +143,7 @@ public class PrimeChecker {
 }
 
 ```
+_________________________________
 
 ### Recursive Extended Euclidean Theorem
 ### Euclidean Algorithm for GCD
@@ -163,6 +164,8 @@ public class GCD {
     }
 }
 ```
+_________________________________
+
 ### Recursive Modular Exponentiation
 ```java
 /*
@@ -203,6 +206,8 @@ public class RecursiveModularExponentiation {
     }
 }
 ```
+_________________________________
+
 ### Iterative Modular Exponention
 ```java
 public class IterativeModularExponentiation {
@@ -223,6 +228,8 @@ public class IterativeModularExponentiation {
     }
 }
 ```
+_________________________________
+
 ### Power function for negative/positive exponents
 ```java
 public class GenericPower {
@@ -246,6 +253,8 @@ public class GenericPower {
     }
 }
 ```
+_________________________________
+
 ### Counting number of '1' in binary representation of a number
 ### Seive of Erasthones (using BitSet)
 ### Sum of Divisors Using Array
