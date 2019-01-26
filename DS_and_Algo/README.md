@@ -29,16 +29,16 @@
 #### Binary Tree
 
 #### Binary Search Tree
- 
+
 #### Self Balancing Tree
 * B Tree
 * B+ Tree
 * SelfBalancing Binary Search Tree
-	* AVL tree 
-		* Strict balancing is maintained 
+	* AVL tree
+		* Strict balancing is maintained
 		* difference between height of left subtree and right subtree is no more than 1.
-	* Red Black Tree 
-		* flexible balancing 
+	* Red Black Tree
+		* flexible balancing
 		* the longest root-to-leaf path can be in worst case at max double of the shortest root-to-leaf path.
 
 #### Heap (basically a priority queue - implemented as array)
@@ -73,7 +73,7 @@
 
 #### Treap
 
-#### 
+####
 
 # Algorithms
 #### Basic recursion
@@ -81,7 +81,7 @@
 
 #### Binary Search
 * A variant - [LeetCode162](https://leetcode.com/problems/find-peak-element/)
-#### Sorting 
+#### Sorting
 * [with custom comparator](https://leetcode.com/problems/largest-number/)
 #### Divide and Conquer
 #### Greedy Algorithms
@@ -93,7 +93,7 @@
 * Basic Traversal - [LeetCode310](https://leetcode.com/problems/minimum-height-trees/)
 * BFS - [LeetCode200](https://leetcode.com/problems/number-of-islands/)
 * DFS - [LeetCode200](https://leetcode.com/problems/number-of-islands/)
-	* Topological sorting - [LeetCode210](https://leetcode.com/problems/course-schedule-ii/) 
+	* Topological sorting - [LeetCode210](https://leetcode.com/problems/course-schedule-ii/)
 	* Strongly connected components
 	* Detecting cycles in a undirected/directed graph - [LeetCode210](https://leetcode.com/problems/course-schedule-ii/)
     * Longest path in a DAG [LeetCode329](https://leetcode.com/problems/longest-increasing-path-in-a-matrix/) (Read [this](http://www.mathcs.emory.edu/~cheung/Courses/171/Syllabus/11-Graph/Docs/longest-path-in-dag.pdf) link for a more clear and succinct explanation)
@@ -313,8 +313,9 @@ _________________________________
 
 ### Number of Divisors using Array
 * You need to write a method that returns an array, say `arr` such that `arr[i]` stores the count of divisors of `i`.
-* Divisors of `12` are `{1, 2, 3, 4, 6, 12}`. 
+* Divisors of `12` are `{1, 2, 3, 4, 6, 12}`.
 * If you are asked for the proper divisors, you don't need to count the number itself while counting divisors. Proper Divisors of `12` are `{1, 2, 3, 4, 6}`
+
 ```java
 public class NumberOfDivisors {
     public static void main(String[] args) {
@@ -343,6 +344,7 @@ public class NumberOfDivisors {
 _________________________________
 
 ### Sum of Divisors Using Array
+
 ```java
 public class SumOfDivisors {
     public static void main(String[] args) {
@@ -371,8 +373,73 @@ public class SumOfDivisors {
 _________________________________
 
 ### Finding Modular Multiplicative Inverse
+#### With respect to a prime
+* Using Euler's theorem `a^phi(n) = 1 (mod)` if `a` and `n` are coprime (their GCD is 1).
+* If `p` is a prime then, `phi(p) = p-1`.
+* `a^(p-1) = 1 (mod p)` if `p` is prime and `a` & `p` are co-prime (this is Fermatt's Little theorem). This gives `a^(-1) = a^(p-2) (mod p)`. You can calculate this using modular exponentiation.
+
+#### With respect to a non-prime
+* To calculate multiplicative modular inverse of `a` wrt `m`, it's only possible if `a` and `m` are co-prime.
+* Using Extended Euclidean Theorem you can write `ax + my = 1` where `x` and `y` are integers. Here `x` is the multiplicative inverse of `a` with respect to `m`.
+_________________________________
+
 ### Finding all SubStrings nC2 + n
+* There are a total of `nC2 + n` substrings for a given string of length `n`. (choose any 2 indices out of n - this accounts for the `nC2` - all the strings with length 2 or greater than 2, add `n` to take into acoount substrings of length `1`).
+
+```java
+import java.util.*;
+public class SubStrings {
+    public static void main(String[] args) {
+        System.out.println(new SubStrings().getSubstrings("Hello"));
+    }
+    public List<String> getSubstrings(String s) {
+        List<String> subStrings = new ArrayList<>();
+        for(int i=0;i<s.length();i++) {
+            for(int j=i;j<s.length();j++) {
+                subStrings.add(s.substring(i, j+1));
+            }
+        }
+        return subStrings;
+    }
+}
+```
+_________________________________
+
 ### Recursive function to print all permutations of a String
+
+```java
+import java.util.*;
+public class StringPermutation {
+    public static void main(String[] args) {
+        System.out.println(new StringPermutation().getPermutations("Sun"));
+    }
+    public List<String> getPermutations(String s) {
+        List<String> result = new ArrayList<>();
+        getPermutations(s.toCharArray(), result, 0);
+        return result;
+    }
+    private void getPermutations(char[] arr, List<String> result, int counter) {
+        if(counter == arr.length) { // base condition
+            result.add(new String(arr));
+            return;
+        }
+
+        /* i should be started from couter and not from counter+1 */
+        for(int i=counter;i<arr.length;i++) {
+            swap(arr, i, counter);
+            getPermutations(arr, result, counter+1);
+            swap(arr, i, counter);
+        }
+    }
+    private void swap(char []arr, int a, int b) {
+        char temp = arr[a];
+        arr[a] = arr[b];
+        arr[b] = temp;
+    }
+}
+```
+_________________________________
+
 ### Printing all lexicographic permutations of String: non-recursive
 ### Finding all the sub-sets of a given set (Power-set)
 ### Finding the number of ways in which `n` can be expressed as a sum of `k` different numbers
