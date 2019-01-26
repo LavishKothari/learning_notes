@@ -95,7 +95,8 @@
 * DFS - [LeetCode200](https://leetcode.com/problems/number-of-islands/)
 	* Topological sorting - [LeetCode210](https://leetcode.com/problems/course-schedule-ii/) 
 	* Strongly connected components
-	* Detecting cycles in a undirected/directed graph - [LeetCode210](https://leetcode.com/problems/course-schedule-ii/) 
+	* Detecting cycles in a undirected/directed graph - [LeetCode210](https://leetcode.com/problems/course-schedule-ii/)
+    * Longest path in a DAG [LeetCode329](https://leetcode.com/problems/longest-increasing-path-in-a-matrix/) (Read [this](http://www.mathcs.emory.edu/~cheung/Courses/171/Syllabus/11-Graph/Docs/longest-path-in-dag.pdf) link for a more clear and succinct explanation)
 
 
 # Problem Solving
