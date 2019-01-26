@@ -106,7 +106,7 @@
 
 
 
-# My specific Preparation (DataDump)
+# My custom preparation (DataDump)
 ### isPrime
 Time complexity = `O(sqrt(n))` if you find whether `n` is prime or not.
 ```java
