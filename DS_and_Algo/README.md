@@ -108,6 +108,7 @@
 
 # My specific Preparation (DataDump)
 ### isPrime
+Time complexity = `O(sqrt(n))` if you find whether `n` is prime or not.
 ```java
 /*
 0 false
@@ -146,6 +147,8 @@ public class PrimeChecker {
 _________________________________
 
 ### Recursive Extended Euclidean Theorem
+_________________________________
+
 ### Euclidean Algorithm for GCD
 ```java
 /**
@@ -209,6 +212,7 @@ public class RecursiveModularExponentiation {
 _________________________________
 
 ### Iterative Modular Exponention
+(using bitwise-operators can be an advantage, but now-a-days compilers are smart enough to do this on your behalf - so you might not care about this)
 ```java
 public class IterativeModularExponentiation {
     public static void main(String[] args) {
@@ -231,6 +235,7 @@ public class IterativeModularExponentiation {
 _________________________________
 
 ### Power function for negative/positive exponents
+(make sure to have proper method signature - this shows how carefully you design your API)
 ```java
 public class GenericPower {
     public static void main(String[] args) {
@@ -256,9 +261,115 @@ public class GenericPower {
 _________________________________
 
 ### Counting number of '1' in binary representation of a number
+Make sure that you get correct answer for both positive  and negative numbers.
+```java
+public class CountOnes {
+    public static void main(String[] args) {
+        System.out.println(new CountOnes().countOne(10)); // should pring 2
+        System.out.println(new CountOnes().countOne(-5000));
+    }
+
+    public int countOne(long n) {
+        int answer = 0;
+        while (n != 0) {
+            if ((n & 1) == 1)
+                answer++;
+            n >>>= 1; // should use unsigned right-shift, so that it works for negative also
+        }
+        return answer;
+    }
+}
+```
+_________________________________
+
 ### Seive of Erasthones (using BitSet)
-### Sum of Divisors Using Array
+(You should know how to use BitSet or equivalent in the programming language that you are coding in.)
+```java
+import java.util.*;
+
+public class SieveOfEratosthenes {
+    public static void main(String[] args) {
+        System.out.println(new SieveOfEratosthenes().getPrimeBitSet(100));
+    }
+
+    public BitSet getPrimeBitSet(int size) {
+        BitSet isPrime = new BitSet(size); // initially every bit is false
+        isPrime.flip(0, size); // making every bit to true
+        isPrime.set(0, false); // 0 is not a prime
+        isPrime.set(1, false); // 1 is not a prime
+
+        for (int i = 2; i * i < size; i++) {
+            if (isPrime.get(i)) { // if i is prime then making all it's multiples non-prime
+                for (int j = i * i; j < size; j += i) {
+                    isPrime.set(j, false);
+                }
+            }
+        }
+        return isPrime;
+    }
+}
+```
+_________________________________
+
 ### Number of Divisors using Array
+* You need to write a method that returns an array, say `arr` such that `arr[i]` stores the count of divisors of `i`.
+* Divisors of `12` are `{1, 2, 3, 4, 6, 12}`. 
+* If you are asked for the proper divisors, you don't need to count the number itself while counting divisors. Proper Divisors of `12` are `{1, 2, 3, 4, 6}`
+```java
+public class NumberOfDivisors {
+    public static void main(String[] args) {
+        int arr[] = new NumberOfDivisors().numberOfDivisors(12);
+        System.out.println(arr[12]); // should print 6
+    }
+
+    /**
+     * returns an array of integer such that
+     * arr[i] stores number of divisors of i
+     */
+    public int[] numberOfDivisors(int n) {
+        int[] result = new int[n + 1];
+        result[1] = 1;
+        for (int i = 2; i <= n; i++) {
+            result[i] = 2; // 1 and the number itself
+        }
+        for (int i = 2; i <= n; i++) {
+            for (int j = i * 2; j <= n; j += i)
+                result[j]++;
+        }
+        return result;
+    }
+}
+```
+_________________________________
+
+### Sum of Divisors Using Array
+```java
+public class SumOfDivisors {
+    public static void main(String[] args) {
+        int arr[] = new SumOfDivisors().sumOfDivisors(12);
+        System.out.println(arr[12]); // should print 28
+    }
+
+    /**
+     * returns an array of integer such that
+     * arr[i] stores sum of divisors of i
+     */
+    public int[] sumOfDivisors(int n) {
+        int[] result = new int[n + 1];
+        result[1] = 1;
+        for (int i = 2; i <= n; i++) {
+            result[i] = i + 1; // 1 and the number itself
+        }
+        for (int i = 2; i <= n; i++) {
+            for (int j = i * 2; j <= n; j += i)
+                result[j] += i;
+        }
+        return result;
+    }
+}
+```
+_________________________________
+
 ### Finding Modular Multiplicative Inverse
 ### Finding all SubStrings nC2 + n
 ### Recursive function to print all permutations of a String
