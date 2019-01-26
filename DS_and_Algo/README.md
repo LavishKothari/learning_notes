@@ -146,9 +146,107 @@ public class PrimeChecker {
 
 ### Recursive Extended Euclidean Theorem
 ### Euclidean Algorithm for GCD
+```java
+/**
+ * Eculidean algorithm for finding GCD of 2 numbers
+ * <p>
+ * Time Complexity: O(log(a) + log(b)) for finding gcd(a,b)
+ */
+public class GCD {
+    public static void main(String[] args) {
+        System.out.println(new GCD().gcd(8,20));
+    }
+    private long gcd(long a, long b) {
+        if (b == 0)
+            return a;
+        else return gcd(b, a % b);
+    }
+}
+```
 ### Recursive Modular Exponentiation
+```java
+/*
+    (anything, 0, anything) answer should be 1
+    (1, anything, anything) 1
+*/
+public class RecursiveModularExponentiation {
+    public static void main(String[] args) {
+        System.out.println(new RecursiveModularExponentiation().power(1, 34, 34543)); // should return 1
+        System.out.println(new RecursiveModularExponentiation().power(13465, 0, 34543)); // should return 1
+        System.out.println(new RecursiveModularExponentiation().power(2, 10, 100)); // should return 24
+
+        System.out.println(new RecursiveModularExponentiation().powerAlternative(1, 34, 34543)); // should return 1
+        System.out.println(new RecursiveModularExponentiation().powerAlternative(13465, 0, 34543)); // should return 1
+        System.out.println(new RecursiveModularExponentiation().powerAlternative(2, 10, 100)); // should return 24
+
+    }
+
+    public long power(long a, long b, long mod) {
+        if (b == 0) return 1;
+        if (b == 1) return a % mod; // don’t make a mistake by just returning a
+        long temp = power(a, b >> 1, mod);
+        if ((b & 1) == 1) {
+            return (((temp * temp) % mod) * a) % mod;
+        } else {
+            return (temp * temp) % mod;
+        }
+    }
+
+    public long powerAlternative(long a, long b, long mod) {
+        if (b == 0) return 1;
+        if (a == 1) return a % mod;
+        if ((b & 1) == 1) {
+            return (a * powerAlternative((a * a) % mod, b >> 1, mod)) % mod;
+        } else {
+            return powerAlternative((a * a) % mod, b >> 1, mod);
+        }
+    }
+}
+```
 ### Iterative Modular Exponention
-### Power function for negative exponents
+```java
+public class IterativeModularExponentiation {
+    public static void main(String[] args) {
+        System.out.println(new IterativeModularExponentiation().power(1, 43543, 435)); // returns 1
+        System.out.println(new IterativeModularExponentiation().power(154654, 0, 435)); // returns 1
+        System.out.println(new IterativeModularExponentiation().power(2, 10, 100)); // returns 24
+    }
+    public long power(long a, long b, long mod) {
+        long tempResult = 1, result = 1;
+        while (b != 0) {
+            if ((b & 1) == 1)
+                result = (result * a) % mod;
+            b >>= 1;
+            a = (a * a) % mod;
+        }
+        return result;
+    }
+}
+```
+### Power function for negative/positive exponents
+```java
+public class GenericPower {
+    public static void main(String[] args) {
+        System.out.println(new GenericPower().genericPower(1,324));
+        System.out.println(new GenericPower().genericPower(345,1));
+        System.out.println(new GenericPower().genericPower(1,-2));
+        System.out.println(new GenericPower().genericPower(2,-4));
+    }
+    public double genericPower(double a, int b) {
+        if(b==0) return 1;
+        if(a==1) return 1;
+
+        double temp = genericPower(a, b/2);
+        if(b%2 == 0) {
+            return temp*temp;
+        } else {
+            if(b<0) return temp*temp/a;
+            else return temp*temp*a;
+        }
+    }
+}
+```
+### Counting number of '1' in binary representation of a number
 ### Seive of Erasthones (using BitSet)
 ### Sum of Divisors Using Array
 ### Number of Divisors using Array
