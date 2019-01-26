@@ -239,24 +239,26 @@ _________________________________
 ```java
 public class GenericPower {
     public static void main(String[] args) {
-        System.out.println(new GenericPower().genericPower(1,324));
-        System.out.println(new GenericPower().genericPower(345,1));
-        System.out.println(new GenericPower().genericPower(1,-2));
-        System.out.println(new GenericPower().genericPower(2,-4));
+        System.out.println(new GenericPower().genericPower(1, 324));
+        System.out.println(new GenericPower().genericPower(345, 1));
+        System.out.println(new GenericPower().genericPower(1, -2));
+        System.out.println(new GenericPower().genericPower(2, -4));
     }
-    public double genericPower(double a, int b) {
-        if(b==0) return 1;
-        if(a==1) return 1;
 
-        double temp = genericPower(a, b/2);
-        if(b%2 == 0) {
-            return temp*temp;
+    public double genericPower(double a, int b) {
+        if (b == 0) return 1;
+        if (a == 1) return 1;
+
+        double temp = genericPower(a, b / 2);
+        if (b % 2 == 0) {
+            return temp * temp;
         } else {
-            if(b<0) return temp*temp/a;
-            else return temp*temp*a;
+            if (b < 0) return temp * temp / a;
+            else return temp * temp * a;
         }
     }
 }
+
 ```
 _________________________________
 
@@ -388,15 +390,17 @@ _________________________________
 
 ```java
 import java.util.*;
+
 public class SubStrings {
     public static void main(String[] args) {
         System.out.println(new SubStrings().getSubstrings("Hello"));
     }
+
     public List<String> getSubstrings(String s) {
         List<String> subStrings = new ArrayList<>();
-        for(int i=0;i<s.length();i++) {
-            for(int j=i;j<s.length();j++) {
-                subStrings.add(s.substring(i, j+1));
+        for (int i = 0; i < s.length(); i++) {
+            for (int j = i; j < s.length(); j++) {
+                subStrings.add(s.substring(i, j + 1));
             }
         }
         return subStrings;
@@ -409,29 +413,33 @@ _________________________________
 
 ```java
 import java.util.*;
+
 public class StringPermutation {
     public static void main(String[] args) {
         System.out.println(new StringPermutation().getPermutations("Sun"));
     }
+
     public List<String> getPermutations(String s) {
         List<String> result = new ArrayList<>();
         getPermutations(s.toCharArray(), result, 0);
         return result;
     }
+
     private void getPermutations(char[] arr, List<String> result, int counter) {
-        if(counter == arr.length) { // base condition
+        if (counter == arr.length) { // base condition
             result.add(new String(arr));
             return;
         }
 
         /* i should be started from couter and not from counter+1 */
-        for(int i=counter;i<arr.length;i++) {
+        for (int i = counter; i < arr.length; i++) {
             swap(arr, i, counter);
-            getPermutations(arr, result, counter+1);
+            getPermutations(arr, result, counter + 1);
             swap(arr, i, counter);
         }
     }
-    private void swap(char []arr, int a, int b) {
+
+    private void swap(char[] arr, int a, int b) {
         char temp = arr[a];
         arr[a] = arr[b];
         arr[b] = temp;
