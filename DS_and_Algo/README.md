@@ -41,7 +41,7 @@
     * [With respect to a non-prime](#with-respect-to-a-non-prime)
   * [Finding all SubStrings nC2 + n](#finding-all-substrings-nc2-+-n)
   * [Recursive function to print all permutations of a String](#recursive-function-to-print-all-permutations-of-a-string)
-  * [Printing all lexicographic permutations of String: non-recursive](#printing-all-lexicographic-permutations-of-string:-non-recursive)
+  * [Printing all lexicographic permutations of String-(non-recursive)](#printing-all-lexicographic-permutations-of-string-non-recursive)
   * [Finding all the sub-sets of a given set (Power-set) - Recursive](#finding-all-the-sub-sets-of-a-given-set-(power-set)---recursive)
   * [Finding all the sub-sets of a given set (Power-set) - Iterative](#finding-all-the-sub-sets-of-a-given-set-(power-set)---iterative)
   * [Finding the number of ways in which `n` can be expressed as a sum of `k` different numbers](#finding-the-number-of-ways-in-which-`n`-can-be-expressed-as-a-sum-of-`k`-different-numbers)
@@ -545,7 +545,7 @@ public class StringPermutation {
 ```
 _________________________________
 
-## Printing all lexicographic permutations of String: non-recursive
+## Printing all lexicographic permutations of String (non-recursive)
 _________________________________
 
 ## Finding all the sub-sets of a given set (Power-set) - Recursive
