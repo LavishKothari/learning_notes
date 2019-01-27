@@ -1022,10 +1022,112 @@ _________________________________
 ### Tower of Hanoi
 _________________________________
 
-### Check whether a number is power of 2 or not
+### Check whether a number is power of 2 or not using bitwise-operators
+
+```java
+public class CheckPowerOf2 {
+    public static void main(String[] args) {
+        System.out.println(new CheckPowerOf2().isPowerOf2(100));
+        System.out.println(new CheckPowerOf2().isPowerOf2(1024));
+    }
+    public boolean isPowerOf2(long n) {
+        return (n & (n-1)) == 0;
+    }
+}
+```
+_________________________________
+
 ### DP (Dynamic programming)
-### LIS - Longest Increasing SubSequence O(n^2) and O(n log(n))
-### LCS - Longest common subsequence
+* Dynamic Programming is a programming paradigm in  which we solve each subproblem exactly once and store the subsolutions in a table.
+* The next time when same subproblem needs to be solved, we simply lookup to the previously computed solution.
+* Memoization and DP are different
+  * DP is bottom up approach
+  * Memoization is a top-down approach
+* Properties of a Dynamic Programming Problem:
+  * Overlapping Sub-problems
+  * Optimal Sub-structure
+* **Overlapping sub-problems** - In divide and conquer subproblems don't overlap, but in DP same sub-problem needs to be solved again and again.
+* Shortest path in a graph exhibits optimal substructure property, but longest path in a graph don't exhibit this property.
+_________________________________
+
+### LIS - Longest Increasing SubSequence (LIS) O(n^2) and O(n log(n))
+* Time Complexity = `O(n log(n))` and space complexity = `O(n)`
+
+```java
+import java.util.*;
+
+public class LeetCode300 {
+    public static void main(String[] args) {
+        System.out.println(new LeetCode300().lengthOfLIS(new int[]{10, 9, 2, 5, 3, 7, 101, 18}));
+
+    }
+
+    public int lengthOfLIS(int[] arr) {
+        // this list always be sorted
+        List<Integer> list = new ArrayList<>();
+
+        for (int i = 0; i < arr.length; i++) {
+            int res = Collections.binarySearch(list, arr[i]);
+            if (res < 0) {
+                res++;
+                res = -res;
+                if (res == list.size())
+                    list.add(arr[i]);
+                else
+                    list.set(res, arr[i]);
+            }
+        }
+
+        return list.size();
+    }
+}
+```
+_________________________________
+
+### LCS - Longest common subsequence (LCS)
+* Given 2 strings `x` and `y` find the length of LCS.
+* Suppose `x=ABCDGH` and `y=AEDFHR`, then the LCS is `ADH`
+* Data-Structure for storing solution of subproblems: A 2-D matrix/table of size `m*n`, where `m` is the length of first string and `n` is the length of second string.
+* `dp[i][j]` denotes the length of LCS for strings:
+ * prefix string of `x` taking only first `i` characters.
+ * prefix string of `y` taking only first `j` characters.
+* Solving base cases trivially:
+    * `dp[0][j]` for all `j=0 to y.length` is `0`
+    * `dp[i][j]` for all `i=0 to x.length` is `0`
+* Recursively defining the solution:
+    * `dp[i][j] = max(dp[i-1][j], dp[i][j-1], dp[i-1][j-1] + diff)` where `diff=1` if `i`th alphabet of `x` is equal to `j` alpahbet of `y` otherwise `diff=0`
+
+```java
+public class LCS {
+    public static void main(String[] args) {
+        System.out.println(new LCS().lcs("", "")); // should return 0
+        System.out.println(new LCS().lcs("ABCDGH", "AEDFHR")); // should return 3
+        System.out.println(new LCS().lcs("AGGTAB", "GXTXAYB")); // should return 4
+
+    }
+
+    public int lcs(String x, String y) {
+        int m = x.length(), n = y.length();
+        int[][] dp = new int[m + 1][n + 1];
+        for (int i = 0; i <= m; i++)
+            dp[i][0] = 0;
+        for (int j = 0; j < n; j++)
+            dp[0][j] = 0;
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                int diff = (x.charAt(i - 1) == y.charAt(j - 1) ? 1 : 0);
+                dp[i][j] = max3(dp[i][j - 1], dp[i - 1][j], dp[i - 1][j - 1] + diff);
+            }
+        }
+        return dp[m][n];
+    }
+
+    private int max3(int a, int b, int c) {
+        return Math.max(Math.max(a, b), c);
+    }
+}
+```
+_________________________________
 ### Edit Distance
 ### min-cost path
 ### Subset sum problem
