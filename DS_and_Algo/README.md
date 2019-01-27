@@ -681,6 +681,32 @@ public class LeetCode53 {
     }
 }
 ```
+
+* A simple Dynamic Programming solution:
+
+```java
+    /**
+    * A dynamic programming solution
+    */
+   public int maxSubArray(int[] nums) {
+       /*
+        * dp[i] stores the sum of contiguous sub-array
+        * that ends at ith index and has max sum
+        */
+       int[] dp = new int[nums.length];
+       int max;
+       max = dp[0] = nums[0];
+
+       for (int i = 1; i < nums.length; i++) {
+           if (dp[i - 1] + nums[i] > nums[i])
+               dp[i] = dp[i - 1] + nums[i];
+           else dp[i] = nums[i];
+           if (max < dp[i])
+               max = dp[i];
+       }
+       return max;
+   }
+```
 _________________________________
 ### Finding a pair in array that sums to a given value
 * The following program returns the indices of elements whose sum is given target.
@@ -730,6 +756,57 @@ public class LeetCode1 {
 _________________________________
 
 ### Finding a Triplet in array that sums to a given value
+* [LeetCode15](https://leetcode.com/problems/3sum/).
+* Following the approach given [here](https://www.geeksforgeeks.org/count-triplets-with-sum-smaller-that-a-given-value/).
+
+```java
+import java.util.*;
+/*
+    Time complexity - O(n^2)
+    Space complexity - O(n)
+*/
+
+public class LeetCode15_1 {
+    public static void main(String[] args) {
+        System.out.println(new LeetCode15_1().threeSum(new int[]{-1, 0, 1, 2, -1, -4}));
+        System.out.println(new LeetCode15_1().threeSum(new int[]{1, 2, 3}));
+        System.out.println(new LeetCode15_1().threeSum(new int[]{0, 0, 0}));
+        System.out.println(new LeetCode15_1().threeSum(new int[]{-2, 0, 0, 2, 2}));
+    }
+
+    public List<List<Integer>> threeSum(int[] nums) {
+        Set<List<Integer>> result = new HashSet<>();
+        Arrays.sort(nums);
+        for (int i = 0; i < nums.length; i++) {
+            if (i > 0 && nums[i] == nums[i - 1])
+                continue;
+            List<List<Integer>> lists = findPair(i + 1, -nums[i], nums);
+            for (List<Integer> cl : lists) {
+                result.add(Arrays.asList(new Integer[]{nums[i], cl.get(0), cl.get(1)}));
+            }
+        }
+        return new ArrayList<>(result);
+    }
+
+    private List<List<Integer>> findPair(int start, int target, int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
+        for (int i = start, j = nums.length - 1; i < j; ) {
+            if (nums[i] + nums[j] < target) {
+                i++;
+            } else if (nums[i] + nums[j] > target) {
+                j--;
+            } else {
+                result.add(Arrays.asList(new Integer[]{nums[i], nums[j]}));
+                i++;
+                j--;
+            }
+        }
+        return result;
+    }
+}
+```
+_________________________________
+
 ### Finding a tuple of 4 elementes in array that sums to a given value
 * Time complexity - O(n^2)
 * Space complexity - O(n^2)
@@ -800,11 +877,109 @@ public class LeetCode18 {
     }
 }
 ```
+_________________________________
+
 ### Convert Binary Tree into it's mirror
+_________________________________
+
+### Check if a give Binary tree is mirror of itself
+* Simple Recursive solution
+* [LeetCode226](https://leetcode.com/problems/invert-binary-tree/)
+
+```java
+class TreeNode {
+    int val;
+    TreeNode left;
+    TreeNode right;
+
+    TreeNode(int x) {
+        val = x;
+    }
+}
+public class LeetCode226 {
+    public TreeNode invertTree(TreeNode root) {
+        if (root == null)
+            return root;
+        swapChildren(root);
+        invertTree(root.left);
+        invertTree(root.right);
+        return root;
+    }
+
+    private void swapChildren(TreeNode root) {
+        TreeNode temp = root.left;
+        root.left = root.right;
+        root.right = temp;
+    }
+
+}
+```
+_________________________________
+
 ### Check if two trees are mirror of each other
-### Tower of Hanoi
+
+```java
+public class LeetCode101 {
+    public boolean isSymmetric(TreeNode root) {
+        if (root == null)
+            return true;
+        return isSymmetric(root.left, root.right);
+    }
+
+    private boolean isSymmetric(TreeNode root1, TreeNode root2) {
+        if (root1 == null && root2 == null) // both roots are null
+            return true;
+        if (root1 == null || root2 == null) // exactly one root is null
+            return false;
+        return root1.val == root2.val &&
+                isSymmetric(root1.left, root2.right) &&
+                isSymmetric(root1.right, root2.left);
+    }
+}
+```
+
+_________________________________
+
 ### Lowest common ancestor in a BST
+* [LeetCode235](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/)
+* Time Complexity - `O(h)`, where `h` is height of the tree
+* The following program assumes that both the nodes `p` and `q` are present in tree. (so this method will never return `null`).
+
+```java
+public class LeetCode235 {
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        TreeNode cn = root;
+        while (cn != null) {
+            if (cn.val > p.val && cn.val > q.val)
+                cn = cn.left;
+            else if (cn.val < p.val && cn.val < q.val)
+                cn = cn.right;
+            else if (cn.val == p.val)
+                return cn;
+            else if (cn.val == q.val)
+                return cn;
+            else return cn;
+        }
+        // should never be the case
+        // if both p and q exists in the tree
+        return null;
+    }
+}
+```
+_________________________________
+
 ### Height of a Binary Tree
+* [LeetCode104](https://leetcode.com/problems/maximum-depth-of-binary-tree/)
+
+```java
+public class LeetCode104 {
+    public int maxDepth(TreeNode root) {
+        if (root == null)
+            return 0;
+        return Math.max(maxDepth(root.left), maxDepth(root.right)) + 1;
+    }
+}
+```
 ### Tree-Traversals
 #### InOrder
 #### PreOrder
@@ -815,6 +990,38 @@ public class LeetCode18 {
 ### Count leaf nodes in a given Binary tree
 ### Size of a Binary Tree
 ### Children sum property
+
+### Path sum in a tree
+* [LeetCode437](https://leetcode.com/problems/path-sum-iii/)
+* Time Complexity = `O(n^2)`
+
+```java
+public class LeetCode437 {
+    public int pathSum(TreeNode root, int sum) {
+        if (root == null)
+            return 0;
+        return pathSum(root.left, sum) +
+                pathSum(root.right, sum) +
+                pathSumHelper(root, sum);
+    }
+
+    public int pathSumHelper(TreeNode root, int sum) {
+        if (root == null) {
+            return 0;
+        }
+        int c = pathSumHelper(root.left, sum - root.val);
+        int d = pathSumHelper(root.right, sum - root.val);
+        int answer = (root.val == sum ? 1 : 0);
+        return c + d + answer;
+    }
+}
+```
+
+_________________________________
+
+### Tower of Hanoi
+_________________________________
+
 ### Check whether a number is power of 2 or not
 ### DP (Dynamic programming)
 ### LIS - Longest Increasing SubSequence O(n^2) and O(n log(n))
