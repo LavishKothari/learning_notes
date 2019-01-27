@@ -15,10 +15,10 @@
 #### Stack
 * Last-In First-Out
 * Usage:
-* DFS
-* InOrder, PreOrder and PostOrder tree traversals
-* Infix, prefix and postfix evaluation
-* effectively every recursive problem can be modelled using Stack
+ * DFS
+ * InOrder, PreOrder and PostOrder tree traversals
+ * Infix, prefix and postfix evaluation
+ * effectively every recursive problem can be modelled to an iterative one using Stack
 
 #### Queue
 * First-In First-Out
@@ -72,8 +72,6 @@
 #### K Dimensional Tree
 
 #### Treap
-
-####
 
 # Algorithms
 #### Basic recursion
@@ -502,7 +500,7 @@ class PowerSetIterative {
         List<List<Integer>> result = new ArrayList<>();
         int power = (1 << list.size());
         for (int i = 0; i < power; i++) {
-            int ci = i;
+            int ci = i; // don't update the original i
             List<Integer> tempList = new ArrayList<>();
             int counter = 0;
             while (ci != 0) {
@@ -519,13 +517,170 @@ class PowerSetIterative {
 ```
 _________________________________
 ### Finding the number of ways in which `n` can be expressed as a sum of `k` different numbers
+* `k` non-zero numbers
+* Suppose you need to find number of ways in which `10` can be expresses as a sum of `4` different non-zero numbers.
+ * To visualize, assume you have an array of `10` elements and each element of the array is `1`.
+ * there are a total of 9 internal boundaries in this array and and you need to choose `3` of them to partition this arrya of `1`s into 4 non-zero parts.
+ * so for `n=10` and `k=4`, then answer is `9C3` = `84`
+* The answer comes out to be `(n-1)C(k-1)`
+_________________________________
+
+### Calculate `nCk (mod p)` (where `p` is prime)
+* Idea:
+ * don't repeatedly calculte the same factorials, instead store the factorials in an array and avoid recomputing.
+ * As `p` is prime, you can apply Fermat's little theorem to calculate modular inverse.
+
+ ```java
+ import java.util.ArrayList;
+ import java.util.List;
+
+ // 9C3 should return 84
+ public class NCKModP {
+     public static void main(String[] args) {
+         System.out.println(new NCKModP().nCkModP(9, 3, 1000000007)); // 84
+         System.out.println(new NCKModP().nCkModP(1, 1, 1000000007)); // 1
+         System.out.println(new NCKModP().nCkModP(1, 0, 1000000007)); // 1
+     }
+
+     // assuming that p is prime
+     public long nCkModP(int n, int k, long p) {
+         List<Long> facts = getFactorials(n, p);
+         long numerator = facts.get(n);
+         long denominator = (facts.get(k) * facts.get(n - k)) % p;
+
+         return (numerator * power(denominator, p - 2, p)) % p;
+     }
+
+     private long power(long a, long b, long mod) {
+         if (b == 0)
+             return 1;
+         long temp = power(a, b / 2, mod);
+         if ((b & 1) == 1) {
+             return (((temp * temp) % mod) * a) % mod;
+         } else return (temp * temp) % mod;
+     }
+
+     private List<Long> getFactorials(int n, long p) {
+         List<Long> facts = new ArrayList<>(n + 1);
+         facts.add(1L); // factorial of 0 is 1
+         for (int i = 1; i <= n; i++) {
+             facts.add((facts.get(i - 1) * i) % p);
+         }
+         return facts;
+     }
+ }
+ ```
+
 ### Fibonacci numbers
-### Sum of first `n` fibonacci numbers
+* Using recursion
+* Using DP
+* Using no extra memory
+
+```java
+public class FibonacciNumbers {
+    public static void main(String[] args) {
+        System.out.println(new FibonacciNumbers().getNth(10)); // 55
+        System.out.println(new FibonacciNumbers().getNthDP(10)); // 55
+        System.out.println(new FibonacciNumbers().getNthIterative(10)); // 55
+    }
+
+    /**
+     * Recursion:
+     * Time complexity = O(2^n) for finding nth fibonacci number
+     */
+    public long getNth(int n) {
+        if (n == 1 || n == 2)
+            return 1;
+        return getNth(n - 1) + getNth(n - 2);
+    }
+
+    /**
+     * Iterative - Dynamic Programming approach:
+     * Time complexity = O(n) for finding nth fibonacci number
+     * Space complexity = O(n)
+     */
+    public long getNthDP(int n) {
+        int[] dp = new int[n + 1];
+        dp[0] = 0;
+        dp[1] = 1;
+        for (int i = 2; i <= n; i++)
+            dp[i] = dp[i - 1] + dp[i - 2];
+        return dp[n];
+    }
+
+    /**
+     * Iterative with constant space, time compleity: O(n)
+     */
+    public long getNthIterative(int n) {
+        long a = 0, b = 1, answer = 0;
+        for (int i = 2; i <= n; i++) {
+            answer = a + b;
+            a = b;
+            b = answer;
+        }
+        return answer;
+    }
+}
+```
+* Some facts about Fibonacci Numbers:
+ * calculating Fibonacci numbers using Golden Ratio:
+   * `F(n) = floor(phi^n / sqrt(5) + 0.5)` where `phi` is the golden ratio.
+   * Using this above formula, you can calculate the `n`th fibonacci number in time complexity `O(log(n))`.
+ * calculating Fibonacci numbers using matrix
+ ```
+ [ 1 1 ] ^ n   =  [F(n+1)     F(n)]
+ [ 1 0 ]          [F(n)       F(n-1)]
+ ```
+   * You can calculate the power of the above matrix in `O(log(n))` using divide and conquer
+
+_________________________________
+
+### Sum of first `n` fibonacci numbers in `O(log(n))`
+* `Sum(first n fibonacci numbers) = f(n+2) - f(2)` assuming fibonacci series is like `1,1,2,3,5,8...`
+_________________________________
 ### Infix to Perfix conversion using Stack
+_________________________________
 ### Infix to Prefix conversion using recursion
+_________________________________
 ### Evaluation of Postfix
+_________________________________
 ### Evaluation of Prefix
+_________________________________
 ### Largest sum contiguous sub-array - Kadane's Algo
+* Space Complexity: `O(1)`
+* Time Complexity: `O(n)`
+* Edge cases:
+  * all the numbers are negative (in this case it should return the largest number in the array)
+  * the array given is of length `0` (should return `0` in this case)
+
+```java
+public class LeetCode53 {
+    public static void main(String[] args) {
+        System.out.println(new LeetCode53().maxSubArray(new int[]{-10, -2, -3, -1})); // -1
+        System.out.println(new LeetCode53().maxSubArray(new int[]{-1, -6, -9, -9})); // -1
+        System.out.println(new LeetCode53().maxSubArray(new int[]{-5, -8, 6, -8, -7})); // 6
+        System.out.println(new LeetCode53().maxSubArray(new int[]{4, 6, -11, 7, 8, 0, -3, 10}));// 22
+        System.out.println(new LeetCode53().maxSubArray(new int[]{-5, 6})); // 6
+    }
+
+    public int maxSubArray(int[] nums) {
+        if (nums.length == 0)
+            return 0;
+        int maxSum = nums[0];
+        int currentSum = nums[0];
+        for (int i = 1; i < nums.length; i++) {
+            if (currentSum < 0)
+                currentSum = 0; // should I initialize it to 0
+
+            currentSum = currentSum + nums[i];
+            if (maxSum < currentSum)
+                maxSum = currentSum;
+        }
+        return maxSum;
+    }
+}
+```
+_________________________________
 ### Finding a pair in array that sums to a given value
 ### Finding a Triplet in array that sums to a given value
 ### Finding a tuple of 4 elementes in array that sums to a given value
