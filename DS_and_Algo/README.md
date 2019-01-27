@@ -1,116 +1,18 @@
-* [Data Structures](#data-structures)
-      * [Arrays](#arrays)
-      * [Linked-List](#linked-list)
-      * [Stack](#stack)
-      * [Queue](#queue)
-      * [Binary Tree](#binary-tree)
-      * [Binary Search Tree](#binary-search-tree)
-      * [Self Balancing Tree](#self-balancing-tree)
-      * [Heap (basically a priority queue - implemented as array)](#heap-(basically-a-priority-queue---implemented-as-array))
-      * [Hash-Table](#hash-table)
-      * [Graph](#graph)
-      * [Segment Tree](#segment-tree)
-      * [Suffix Array and Suffix Tree](#suffix-array-and-suffix-tree)
-      * [Binary-Indexed Tree](#binary-indexed-tree)
-      * [Trie](#trie)
-      * [Splay Tree](#splay-tree)
-      * [K Dimensional Tree](#k-dimensional-tree)
-      * [Treap](#treap)
-* [Algorithms](#algorithms)
-      * [Basic recursion](#basic-recursion)
-      * [Binary Search](#binary-search)
-      * [Sorting](#sorting)
-      * [Divide and Conquer](#divide-and-conquer)
-      * [Greedy Algorithms](#greedy-algorithms)
-      * [Dynamic Programming](#dynamic-programming)
-      * [Graph](#graph)
-* [Problem Solving](#problem-solving)
-* [My custom preparation (DataDump)](#my-custom-preparation-(datadump))
-    * [isPrime](#isprime)
-    * [Recursive Extended Euclidean Theorem](#recursive-extended-euclidean-theorem)
-    * [Euclidean Algorithm for GCD](#euclidean-algorithm-for-gcd)
-    * [Recursive Modular Exponentiation](#recursive-modular-exponentiation)
-    * [Iterative Modular Exponention](#iterative-modular-exponention)
-    * [Power function for negative/positive exponents](#power-function-for-negative/positive-exponents)
-    * [Counting number of '1' in binary representation of a number](#counting-number-of-'1'-in-binary-representation-of-a-number)
-    * [Seive of Erasthones (using BitSet)](#seive-of-erasthones-(using-bitset))
-    * [Number of Divisors using Array](#number-of-divisors-using-array)
-    * [Sum of Divisors Using Array](#sum-of-divisors-using-array)
-    * [Finding Modular Multiplicative Inverse](#finding-modular-multiplicative-inverse)
-      * [With respect to a prime](#with-respect-to-a-prime)
-      * [With respect to a non-prime](#with-respect-to-a-non-prime)
-    * [Finding all SubStrings nC2 + n](#finding-all-substrings-nc2-+-n)
-    * [Recursive function to print all permutations of a String](#recursive-function-to-print-all-permutations-of-a-string)
-    * [Printing all lexicographic permutations of String: non-recursive](#printing-all-lexicographic-permutations-of-string:-non-recursive)
-    * [Finding all the sub-sets of a given set (Power-set) - Recursive](#finding-all-the-sub-sets-of-a-given-set-(power-set)---recursive)
-    * [Finding all the sub-sets of a given set (Power-set) - Iterative](#finding-all-the-sub-sets-of-a-given-set-(power-set)---iterative)
-    * [Finding the number of ways in which `n` can be expressed as a sum of `k` different numbers](#finding-the-number-of-ways-in-which-`n`-can-be-expressed-as-a-sum-of-`k`-different-numbers)
-    * [Calculate `nCk (mod p)` (where `p` is prime)](#calculate-`nck-(mod-p)`-(where-`p`-is-prime))
-    * [Fibonacci numbers](#fibonacci-numbers)
-    * [Sum of first `n` fibonacci numbers in `O(log(n))`](#sum-of-first-`n`-fibonacci-numbers-in-`o(log(n))`)
-    * [Infix to Perfix conversion using Stack](#infix-to-perfix-conversion-using-stack)
-    * [Infix to Prefix conversion using recursion](#infix-to-prefix-conversion-using-recursion)
-    * [Evaluation of Postfix](#evaluation-of-postfix)
-    * [Evaluation of Prefix](#evaluation-of-prefix)
-    * [Largest sum contiguous sub-array - Kadane's Algo](#largest-sum-contiguous-sub-array---kadane's-algo)
-    * [Finding a pair in array that sums to a given value](#finding-a-pair-in-array-that-sums-to-a-given-value)
-    * [Finding a Triplet in array that sums to a given value](#finding-a-triplet-in-array-that-sums-to-a-given-value)
-    * [Finding a tuple of 4 elementes in array that sums to a given value](#finding-a-tuple-of-4-elementes-in-array-that-sums-to-a-given-value)
-    * [Convert Binary Tree into it's mirror](#convert-binary-tree-into-it's-mirror)
-    * [Check if a give Binary tree is mirror of itself](#check-if-a-give-binary-tree-is-mirror-of-itself)
-    * [Check if two trees are mirror of each other](#check-if-two-trees-are-mirror-of-each-other)
-    * [Lowest common ancestor in a BST](#lowest-common-ancestor-in-a-bst)
-    * [Height of a Binary Tree](#height-of-a-binary-tree)
-    * [Tree-Traversals](#tree-traversals)
-      * [InOrder](#inorder)
-      * [PreOrder](#preorder)
-      * [PostOrder](#postorder)
-      * [Level Order Traversal](#level-order-traversal)
-    * [Determine if 2 given trees are identical](#determine-if-2-given-trees-are-identical)
-    * [Count leaf nodes in a given Binary tree](#count-leaf-nodes-in-a-given-binary-tree)
-    * [Size of a Binary Tree](#size-of-a-binary-tree)
-    * [Children sum property](#children-sum-property)
-    * [Path sum in a tree](#path-sum-in-a-tree)
-    * [Tower of Hanoi](#tower-of-hanoi)
-    * [Check whether a number is power of 2 or not using bitwise-operators](#check-whether-a-number-is-power-of-2-or-not-using-bitwise-operators)
-    * [DP (Dynamic programming)](#dp-(dynamic-programming))
-    * [LIS - Longest Increasing SubSequence (LIS) O(n^2) and O(n log(n))](#lis---longest-increasing-subsequence-(lis)-o(n^2)-and-o(n-log(n)))
-    * [LCS - Longest common subsequence (LCS)](#lcs---longest-common-subsequence-(lcs))
-    * [Edit Distance](#edit-distance)
-    * [min-cost path](#min-cost-path)
-    * [Subset sum problem](#subset-sum-problem)
-    * [Knapsack Problem (With repetition, without repetition, fractional knapsack)](#knapsack-problem-(with-repetition,-without-repetition,-fractional-knapsack))
-    * [Coin change problem](#coin-change-problem)
-    * [Calculating binomial coefficient](#calculating-binomial-coefficient)
-    * [Matric Chain Multiplication](#matric-chain-multiplication)
-    * [Longest palindromic Subsequence](#longest-palindromic-subsequence)
-    * [Rod Cutting problem](#rod-cutting-problem)
-    * [Maximum Sum Increasing Subsequence](#maximum-sum-increasing-subsequence)
-    * [Longest Bitonic Sequence](#longest-bitonic-sequence)
-    * [Floyd Warshall's Algo - All pair shortest path](#floyd-warshall's-algo---all-pair-shortest-path)
-    * [Catalan Number](#catalan-number)
-    * [Generating 0 and 1 randomly with 75% and 25% probaility](#generating-0-and-1-randomly-with-75%-and-25%-probaility)
-    * [Adjacency matrix. Interpretation of A^n[i][j]](#adjacency-matrix.-interpretation-of-a^n[i][j])
-    * [Finding cycles in undirected graph](#finding-cycles-in-undirected-graph)
-    * [Finding cycles in directed graph](#finding-cycles-in-directed-graph)
-    * [DFS - Longest path in a DAG](#dfs---longest-path-in-a-dag)
-
-
 # Data Structures
 
-#### Arrays
+## Arrays
 * Collection of items stored at contiguous memory location
 * Random Access
 * Growing or shrinking the array is difficult, all the previous elements need to be relocated
 * Because of contiguous storage, you have better cache locality (more cache hits and so preformance advantage)
 
-#### Linked-List
+## Linked-List
 * Elements are not stored at contiguous memory locations
 * No Random access
 * Bad cache utilization
 * growing/shrinking the list is inherently supported
 
-#### Stack
+## Stack
 * Last-In First-Out
 * Usage:
  * DFS
@@ -118,17 +20,17 @@
  * Infix, prefix and postfix evaluation
  * effectively every recursive problem can be modelled to an iterative one using Stack
 
-#### Queue
+## Queue
 * First-In First-Out
 * Usage:
 	* BFS
 	* Priority queues are used in Dijkstras
 
-#### Binary Tree
+## Binary Tree
 
-#### Binary Search Tree
+## Binary Search Tree
 
-#### Self Balancing Tree
+## Self Balancing Tree
 * B Tree
 * B+ Tree
 * SelfBalancing Binary Search Tree
@@ -139,43 +41,43 @@
 		* flexible balancing
 		* the longest root-to-leaf path can be in worst case at max double of the shortest root-to-leaf path.
 
-#### Heap (basically a priority queue - implemented as array)
+## Heap (basically a priority queue - implemented as array)
 * Min-Heap
 * Max-Heap
 * Binomial Heap
 * Fibonnacci Heap
 
-#### Hash-Table
+## Hash-Table
 * Collision Handling Technique
 	* Separate chaining
 	* Open addressing
 
-#### Graph
+## Graph
 * Tree (a connected graph with no cycles)
 	* Directed/undirected
 	* Weighted/unweighted
 
-#### Segment Tree
+## Segment Tree
 * Lazy propogation in segment tree
 
-#### Suffix Array and Suffix Tree
+## Suffix Array and Suffix Tree
 
-#### Binary-Indexed Tree
+## Binary-Indexed Tree
 
-#### Trie
+## Trie
 * [LeetCode2018](https://leetcode.com/problems/implement-trie-prefix-tree/)
 
-#### Splay Tree
+## Splay Tree
 
-#### K Dimensional Tree
+## K Dimensional Tree
 
-#### Treap
+## Treap
 
 # Algorithms
-#### Basic recursion
+## Basic recursion
 * [LeetCode337](https://leetcode.com/problems/house-robber-iii/)
 
-#### Binary Search
+## Binary Search
 * A variant - [LeetCode162](https://leetcode.com/problems/find-peak-element/)
 #### Sorting
 * [with custom comparator](https://leetcode.com/problems/largest-number/)
@@ -185,7 +87,7 @@
 * Subset Sum Problem [LeetCode416](https://leetcode.com/problems/partition-equal-subset-sum/)
 * Variant of coin change problem [LeetCode279](https://leetcode.com/problems/perfect-squares/)
 
-#### Graph
+## Graph
 * Basic Traversal - [LeetCode310](https://leetcode.com/problems/minimum-height-trees/)
 * BFS - [LeetCode200](https://leetcode.com/problems/number-of-islands/)
 * DFS - [LeetCode200](https://leetcode.com/problems/number-of-islands/)
@@ -203,7 +105,7 @@
 
 
 # My custom preparation (DataDump)
-### isPrime
+## isPrime
 Time complexity = `O(sqrt(n))` if you find whether `n` is prime or not.
 ```java
 /*
@@ -242,10 +144,10 @@ public class PrimeChecker {
 ```
 _________________________________
 
-### Recursive Extended Euclidean Theorem
+## Recursive Extended Euclidean Theorem
 _________________________________
 
-### Euclidean Algorithm for GCD
+## Euclidean Algorithm for GCD
 ```java
 /**
  * Eculidean algorithm for finding GCD of 2 numbers
@@ -265,7 +167,7 @@ public class GCD {
 ```
 _________________________________
 
-### Recursive Modular Exponentiation
+## Recursive Modular Exponentiation
 ```java
 /*
     (anything, 0, anything) answer should be 1
@@ -307,7 +209,7 @@ public class RecursiveModularExponentiation {
 ```
 _________________________________
 
-### Iterative Modular Exponention
+## Iterative Modular Exponention
 (using bitwise-operators can be an advantage, but now-a-days compilers are smart enough to do this on your behalf - so you might not care about this)
 ```java
 public class IterativeModularExponentiation {
@@ -330,7 +232,7 @@ public class IterativeModularExponentiation {
 ```
 _________________________________
 
-### Power function for negative/positive exponents
+## Power function for negative/positive exponents
 (make sure to have proper method signature - this shows how carefully you design your API)
 ```java
 public class GenericPower {
@@ -358,7 +260,7 @@ public class GenericPower {
 ```
 _________________________________
 
-### Counting number of '1' in binary representation of a number
+## Counting number of '1' in binary representation of a number
 Make sure that you get correct answer for both positive  and negative numbers.
 ```java
 public class CountOnes {
@@ -380,7 +282,7 @@ public class CountOnes {
 ```
 _________________________________
 
-### Seive of Erasthones (using BitSet)
+## Seive of Erasthones (using BitSet)
 (You should know how to use BitSet or equivalent in the programming language that you are coding in.)
 ```java
 import java.util.*;
@@ -409,7 +311,7 @@ public class SieveOfEratosthenes {
 ```
 _________________________________
 
-### Number of Divisors using Array
+## Number of Divisors using Array
 * You need to write a method that returns an array, say `arr` such that `arr[i]` stores the count of divisors of `i`.
 * Divisors of `12` are `{1, 2, 3, 4, 6, 12}`.
 * If you are asked for the proper divisors, you don't need to count the number itself while counting divisors. Proper Divisors of `12` are `{1, 2, 3, 4, 6}`
@@ -441,7 +343,7 @@ public class NumberOfDivisors {
 ```
 _________________________________
 
-### Sum of Divisors Using Array
+## Sum of Divisors Using Array
 
 ```java
 public class SumOfDivisors {
@@ -470,18 +372,18 @@ public class SumOfDivisors {
 ```
 _________________________________
 
-### Finding Modular Multiplicative Inverse
-#### With respect to a prime
+## Finding Modular Multiplicative Inverse
+### With respect to a prime
 * Using Euler's theorem `a^phi(n) = 1 (mod)` if `a` and `n` are coprime (their GCD is 1).
 * If `p` is a prime then, `phi(p) = p-1`.
 * `a^(p-1) = 1 (mod p)` if `p` is prime and `a` & `p` are co-prime (this is Fermatt's Little theorem). This gives `a^(-1) = a^(p-2) (mod p)`. You can calculate this using modular exponentiation.
 
-#### With respect to a non-prime
+### With respect to a non-prime
 * To calculate multiplicative modular inverse of `a` wrt `m`, it's only possible if `a` and `m` are co-prime.
 * Using Extended Euclidean Theorem you can write `ax + my = 1` where `x` and `y` are integers. Here `x` is the multiplicative inverse of `a` with respect to `m`.
 _________________________________
 
-### Finding all SubStrings nC2 + n
+## Finding all SubStrings nC2 + n
 * There are a total of `nC2 + n` substrings for a given string of length `n`. (choose any 2 indices out of n - this accounts for the `nC2` - all the strings with length 2 or greater than 2, add `n` to take into acoount substrings of length `1`).
 
 ```java
@@ -505,7 +407,7 @@ public class SubStrings {
 ```
 _________________________________
 
-### Recursive function to print all permutations of a String
+## Recursive function to print all permutations of a String
 * For `Sun` the output should be something like: `[Sun, Snu, uSn, unS, nuS, nSu]`
 
 ```java
@@ -545,10 +447,10 @@ public class StringPermutation {
 ```
 _________________________________
 
-### Printing all lexicographic permutations of String: non-recursive
+## Printing all lexicographic permutations of String: non-recursive
 _________________________________
 
-### Finding all the sub-sets of a given set (Power-set) - Recursive
+## Finding all the sub-sets of a given set (Power-set) - Recursive
 ```java
 import java.util.*;
 
@@ -582,7 +484,7 @@ class PowerSetRecursive {
 
 _________________________________
 
-### Finding all the sub-sets of a given set (Power-set) - Iterative
+## Finding all the sub-sets of a given set (Power-set) - Iterative
 
 ```java
 import java.util.ArrayList;
@@ -614,7 +516,7 @@ class PowerSetIterative {
 }
 ```
 _________________________________
-### Finding the number of ways in which `n` can be expressed as a sum of `k` different numbers
+## Finding the number of ways in which `n` can be expressed as a sum of `k` different numbers
 * `k` non-zero numbers
 * Suppose you need to find number of ways in which `10` can be expresses as a sum of `4` different non-zero numbers.
  * To visualize, assume you have an array of `10` elements and each element of the array is `1`.
@@ -623,7 +525,7 @@ _________________________________
 * The answer comes out to be `(n-1)C(k-1)`
 _________________________________
 
-### Calculate `nCk (mod p)` (where `p` is prime)
+## Calculate `nCk (mod p)` (where `p` is prime)
 * Idea:
  * don't repeatedly calculte the same factorials, instead store the factorials in an array and avoid recomputing.
  * As `p` is prime, you can apply Fermat's little theorem to calculate modular inverse.
@@ -669,7 +571,7 @@ _________________________________
  }
  ```
 
-### Fibonacci numbers
+## Fibonacci numbers
 * Using recursion
 * Using DP
 * Using no extra memory
@@ -733,18 +635,23 @@ public class FibonacciNumbers {
 
 _________________________________
 
-### Sum of first `n` fibonacci numbers in `O(log(n))`
+## Sum of first `n` fibonacci numbers in `O(log(n))`
 * `Sum(first n fibonacci numbers) = f(n+2) - f(2)` assuming fibonacci series is like `1,1,2,3,5,8...`
 _________________________________
-### Infix to Perfix conversion using Stack
+
+## Infix to Perfix conversion using Stack
 _________________________________
-### Infix to Prefix conversion using recursion
+
+## Infix to Prefix conversion using recursion
 _________________________________
-### Evaluation of Postfix
+
+## Evaluation of Postfix
 _________________________________
-### Evaluation of Prefix
+
+## Evaluation of Prefix
 _________________________________
-### Largest sum contiguous sub-array - Kadane's Algo
+
+## Largest sum contiguous sub-array - Kadane's Algo
 * Space Complexity: `O(1)`
 * Time Complexity: `O(n)`
 * Edge cases:
@@ -806,7 +713,7 @@ public class LeetCode53 {
    }
 ```
 _________________________________
-### Finding a pair in array that sums to a given value
+## Finding a pair in array that sums to a given value
 * The following program returns the indices of elements whose sum is given target.
 
 ```java
@@ -853,7 +760,7 @@ public class LeetCode1 {
 ```
 _________________________________
 
-### Finding a Triplet in array that sums to a given value
+## Finding a Triplet in array that sums to a given value
 * [LeetCode15](https://leetcode.com/problems/3sum/).
 * Following the approach given [here](https://www.geeksforgeeks.org/count-triplets-with-sum-smaller-that-a-given-value/).
 
@@ -905,7 +812,7 @@ public class LeetCode15_1 {
 ```
 _________________________________
 
-### Finding a tuple of 4 elementes in array that sums to a given value
+## Finding a tuple of 4 elementes in array that sums to a given value
 * Time complexity - O(n^2)
 * Space complexity - O(n^2)
 * Make sure you return unique quadruples
@@ -977,10 +884,10 @@ public class LeetCode18 {
 ```
 _________________________________
 
-### Convert Binary Tree into it's mirror
+## Convert Binary Tree into it's mirror
 _________________________________
 
-### Check if a give Binary tree is mirror of itself
+## Check if a give Binary tree is mirror of itself
 * Simple Recursive solution
 * [LeetCode226](https://leetcode.com/problems/invert-binary-tree/)
 
@@ -1014,7 +921,7 @@ public class LeetCode226 {
 ```
 _________________________________
 
-### Check if two trees are mirror of each other
+## Check if two trees are mirror of each other
 
 ```java
 public class LeetCode101 {
@@ -1038,7 +945,7 @@ public class LeetCode101 {
 
 _________________________________
 
-### Lowest common ancestor in a BST
+## Lowest common ancestor in a BST
 * [LeetCode235](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/)
 * Time Complexity - `O(h)`, where `h` is height of the tree
 * The following program assumes that both the nodes `p` and `q` are present in tree. (so this method will never return `null`).
@@ -1066,7 +973,7 @@ public class LeetCode235 {
 ```
 _________________________________
 
-### Height of a Binary Tree
+## Height of a Binary Tree
 * [LeetCode104](https://leetcode.com/problems/maximum-depth-of-binary-tree/)
 
 ```java
@@ -1078,18 +985,18 @@ public class LeetCode104 {
     }
 }
 ```
-### Tree-Traversals
-#### InOrder
-#### PreOrder
-#### PostOrder
-#### Level Order Traversal
+## Tree-Traversals
+### InOrder
+### PreOrder
+### PostOrder
+### Level Order Traversal
 
-### Determine if 2 given trees are identical
-### Count leaf nodes in a given Binary tree
-### Size of a Binary Tree
-### Children sum property
+## Determine if 2 given trees are identical
+## Count leaf nodes in a given Binary tree
+## Size of a Binary Tree
+## Children sum property
 
-### Path sum in a tree
+## Path sum in a tree
 * [LeetCode437](https://leetcode.com/problems/path-sum-iii/)
 * Time Complexity = `O(n^2)`
 
@@ -1117,10 +1024,10 @@ public class LeetCode437 {
 
 _________________________________
 
-### Tower of Hanoi
+## Tower of Hanoi
 _________________________________
 
-### Check whether a number is power of 2 or not using bitwise-operators
+## Check whether a number is power of 2 or not using bitwise-operators
 
 ```java
 public class CheckPowerOf2 {
@@ -1135,7 +1042,7 @@ public class CheckPowerOf2 {
 ```
 _________________________________
 
-### DP (Dynamic programming)
+## DP (Dynamic programming)
 * Dynamic Programming is a programming paradigm in  which we solve each subproblem exactly once and store the subsolutions in a table.
 * The next time when same subproblem needs to be solved, we simply lookup to the previously computed solution.
 * Memoization and DP are different
@@ -1148,7 +1055,7 @@ _________________________________
 * Shortest path in a graph exhibits optimal substructure property, but longest path in a graph don't exhibit this property.
 _________________________________
 
-### LIS - Longest Increasing SubSequence (LIS) O(n^2) and O(n log(n))
+## LIS - Longest Increasing SubSequence (LIS) O(n^2) and O(n log(n))
 * Time Complexity = `O(n log(n))` and space complexity = `O(n)`
 
 ```java
@@ -1182,7 +1089,7 @@ public class LeetCode300 {
 ```
 _________________________________
 
-### LCS - Longest common subsequence (LCS)
+## LCS - Longest common subsequence (LCS)
 * Given 2 strings `x` and `y` find the length of LCS.
 * Suppose `x=ABCDGH` and `y=AEDFHR`, then the LCS is `ADH`
 * Data-Structure for storing solution of subproblems: A 2-D matrix/table of size `(m+1)*(n+1)`, where `m` is the length of first string and `n` is the length of second string.
@@ -1226,24 +1133,24 @@ public class LCS {
 }
 ```
 _________________________________
-### Edit Distance
-### min-cost path
-### Subset sum problem
-### Knapsack Problem (With repetition, without repetition, fractional knapsack)
-### Coin change problem
-### Calculating binomial coefficient
-### Matric Chain Multiplication
-### Longest palindromic Subsequence
-### Rod Cutting problem
-### Maximum Sum Increasing Subsequence
-### Longest Bitonic Sequence
-### Floyd Warshall's Algo - All pair shortest path
-### Catalan Number
-### Generating 0 and 1 randomly with 75% and 25% probaility
-### Adjacency matrix. Interpretation of A^n[i][j]
-### Finding cycles in undirected graph
-### Finding cycles in directed graph
-### DFS - Longest path in a DAG
+## Edit Distance
+## min-cost path
+## Subset sum problem
+## Knapsack Problem (With repetition, without repetition, fractional knapsack)
+## Coin change problem
+## Calculating binomial coefficient
+## Matric Chain Multiplication
+## Longest palindromic Subsequence
+## Rod Cutting problem
+## Maximum Sum Increasing Subsequence
+## Longest Bitonic Sequence
+## Floyd Warshall's Algo - All pair shortest path
+## Catalan Number
+## Generating 0 and 1 randomly with 75% and 25% probaility
+## Adjacency matrix. Interpretation of A^n[i][j]
+## Finding cycles in undirected graph
+## Finding cycles in directed graph
+## DFS - Longest path in a DAG
 [LeetCode329](https://leetcode.com/problems/longest-increasing-path-in-a-matrix/)
 (Read [this](http://www.mathcs.emory.edu/~cheung/Courses/171/Syllabus/11-Graph/Docs/longest-path-in-dag.pdf) link for a more clear and succinct explanation)
 ```java
