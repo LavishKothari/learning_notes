@@ -94,7 +94,7 @@
   * [Finding cycles in undirected graph](#finding-cycles-in-undirected-graph)
   * [Finding cycles in directed graph](#finding-cycles-in-directed-graph)
   * [DFS - Longest path in a DAG](#dfs---longest-path-in-a-dag)
-  * [Disjoint Set](#disjoint-set)
+  * [Disjoint Set](#disjoint-set-(union-find))
 
 # Data Structures
 
@@ -193,7 +193,10 @@
 	* Strongly connected components
 	* Detecting cycles in a undirected/directed graph - [LeetCode210](https://leetcode.com/problems/course-schedule-ii/)
     * Longest path in a DAG [LeetCode329](https://leetcode.com/problems/longest-increasing-path-in-a-matrix/) (Read [this](http://www.mathcs.emory.edu/~cheung/Courses/171/Syllabus/11-Graph/Docs/longest-path-in-dag.pdf) link for a more clear and succinct explanation)
-
+* Detecting cycles in an undirected graph
+    * Disjoint set data-structure - (union-find)
+* Detecting cycles in a directed graph
+    * Simple DFS and while doing DFS if you get a "back-edge" (an edge from curent vertex to a partially visited vertex) then the graph contains cycles.
 
 # Problem Solving
 * Simulating division - [LeetCode166](https://leetcode.com/problems/fraction-to-recurring-decimal/)
@@ -1232,7 +1235,117 @@ public class LCS {
 ```
 _________________________________
 ## Edit Distance
+* [LeetCode72](https://leetcode.com/problems/edit-distance/)
+* You can insert, remove or replace (all operations cost equal). 
+* You need to find the minimum cost of converting one string `x` to other string `y`.
+* Dynamic programming solution:
+    * store subsolutions in a table of size `(m+1)*(n+1)` where `m` is size of `x` and `n` is size of `y`
+    ```java
+    public class EditDistance {
+        public static void main(String[] args) {
+            System.out.println(new EditDistance().editDistance("", "")); // should return 0
+            System.out.println(new EditDistance().editDistance("sunday", "saturday")); // should return 3
+            System.out.println(new EditDistance().editDistance("cat", "cut")); // should return 0
+        }
+
+        public int editDistance(String x, String y) {
+            int m = x.length(), n = y.length();
+            int[][] dp = new int[m + 1][n + 1];
+            // base cases
+            // if the length of any one string is 0, then the answer is length of other string
+            for (int i = 0; i <= m; i++) {
+                dp[i][0] = i;
+            }
+            for (int j = 0; j <= n; j++) {
+                dp[0][j] = j;
+            }
+
+            for (int i = 1; i <= m; i++) {
+                for (int j = 1; j <= n; j++) {
+                    int diff = (x.charAt(i - 1) == y.charAt(j - 1) ? 0 : 1);
+                    dp[i][j] = min3(dp[i][j - 1] + 1, dp[i - 1][j] + 1, diff + dp[i - 1][j - 1]);
+                }
+            }
+            return dp[m][n];
+        }
+
+        public int min3(int a, int b, int c) {
+            return Math.min(Math.min(a, b), c);
+        }
+    }
+
+    ```
+* The time-complexity of above solution is `O(mn)` and space complexity is also `O(mn)`
+* You can reduce the space complexity to `O(min(m,n))` by using two different 1-D arrays.
+    ```java
+    class Solution {
+    public int minDistance(String word1, String word2) {
+            int[][] dp = new int[2][word2.length() + 1];
+            dp[1][0] = 1;
+            for (int j = 0; j <= word2.length(); j++) {
+                dp[0][j] = j;
+            }
+
+            for (int i = 1; i <= word1.length(); i++) {
+                int dpiIndex = i & 1; // int dpiIndex = i % 2;
+                dp[dpiIndex][0] = i; // CATION: this is important - you might miss this
+                int otherIndex = dpiIndex ^ 1;
+
+                for (int j = 1; j <= word2.length(); j++) {
+                    int diff = 0;
+                    if (word1.charAt(i - 1) != word2.charAt(j - 1)) {
+                        diff++;
+                    }
+                    dp[dpiIndex][j] = min3(dp[otherIndex][j] + 1,
+                            dp[dpiIndex][j - 1] + 1,
+                            diff + dp[otherIndex][j - 1]);
+                }
+            }
+            return dp[word1.length() & 1][word2.length()];
+        }
+
+        private int min3(int a, int b, int c) {
+            return Math.min(a, Math.min(b, c));
+        }
+    }
+    ```
+
+_________________________________
+
 ## min-cost path
+
+```java
+public class LeetCode64 {
+    public static void main(String[] args) {
+        int answer = new LeetCode64().minPathSum(new int[][]{{1, 3, 1}, {1, 5, 1}, {4, 2, 1}}); // 7
+        System.out.println(answer);
+    }
+
+    public int minPathSum(int[][] grid) {
+        int m = grid.length, n;
+        if (m == 0)
+            return 0;
+        n = grid[0].length;
+        int dp[][] = new int[m][n];
+        // dp[i][j] denotes the cost of minimum path from [0,0] to [i,j]
+        dp[0][0] = grid[0][0];
+        for (int i = 1; i < m; i++) {
+            dp[i][0] = dp[i - 1][0] + grid[i][0];
+        }
+        for (int j = 1; j < n; j++) {
+            dp[0][j] = dp[0][j - 1] + grid[0][j];
+        }
+        for (int i = 1; i < m; i++) {
+            for (int j = 1; j < n; j++) {
+                dp[i][j] = Math.min(dp[i - 1][j], dp[i][j - 1]) + grid[i][j];
+            }
+        }
+        return dp[m - 1][n - 1];
+    }
+
+}
+```
+_________________________________
 ## Subset sum problem
 ## Knapsack Problem (With repetition, without repetition, fractional knapsack)
 ## Coin change problem
@@ -1244,6 +1357,9 @@ _________________________________
 ## Longest Bitonic Sequence
 ## Floyd Warshall's Algo - All pair shortest path
 ## Catalan Number
+* Read [this](https://en.wikipedia.org/wiki/Catalan_number) article from wikipedia.
+
+_________________________________
 ## Generating 0 and 1 randomly with 75% and 25% probaility
 ## Adjacency matrix. Interpretation of A^n[i][j]
 ## Finding cycles in undirected graph
@@ -1316,9 +1432,13 @@ public class LeetCode329_1 {
 }
 ```
 
-## Disjoint Set
+## Disjoint Set (Union-find)
 * [LeetCode128](https://leetcode.com/problems/longest-consecutive-sequence/)
 * This is an important data-structure.
+* This data structure can also be used to **detect cycles in an undirected graph**. See [this](https://www.geeksforgeeks.org/union-find/) for details.
+    * The idea is simply to merge 2 different vertices in the same group/disjoint-set for each edge in the graph. But if while doing so you find that the vertices for the edge are already in the same set then there is a cycle in the graph.
+* To find cycles in a directed graph you can simply run DFS and search for back-edges
+
 ```java
 import java.util.HashMap;
 import java.util.Map;
@@ -1389,3 +1509,218 @@ public class LeetCode128 {
 
 }
 ```
+
+# Programming language utilities (Specifically for Java)
+## Priority Queues
+* Construct PriorityQueue using `PriorityQueue<Person> personPriorityQueue = new PriorityQueue<>((p1, p2) -> p1.getName().compareTo(p2.getName()));`
+* This implementation provides `O(log(n))` time for the enqueuing and dequeuing methods (`offer`, `poll`, `remove` and `add`)
+* If the `PriorityQueue` is of type `Person` and `Person` implements `Comparable<Person>`, at the same time you have provided `Comparator<Person>` while constructing the queue, then the custom `Comparator` provided when constructing the queue will be given the preference over the `Comparable` that `Person` implements.
+```java
+import java.util.PriorityQueue;
+
+
+public class PriorityQueueExample {
+    public static void main(String[] args) {
+        test1(true);
+        System.out.println("=====");
+        test1(false);
+    }
+
+    private static void test1(boolean takeComparator) {
+        PriorityQueue<Person> personPriorityQueue;
+        if (takeComparator)
+            personPriorityQueue = new PriorityQueue<>((p1, p2) -> p1.getName().compareTo(p2.getName()));
+        else
+            personPriorityQueue = new PriorityQueue<>();
+        personPriorityQueue.offer(new Person("A", 5));
+        personPriorityQueue.offer(new Person("E", 1));
+        personPriorityQueue.offer(new Person("C", 3));
+        personPriorityQueue.offer(new Person("B", 4));
+        personPriorityQueue.offer(new Person("D", 2));
+
+        while (personPriorityQueue.size() != 0) {
+            System.out.println(personPriorityQueue.poll());
+        }
+    }
+
+    private static class Person implements Comparable<Person> {
+        private final String name;
+        private final int age;
+
+        Person(String name, int age) {
+            this.name = name;
+            this.age = age;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        @Override
+        public String toString() {
+            return name + ", " + age;
+        }
+
+        @Override
+        public int compareTo(Person p) {
+            return age - p.age;
+        }
+    }
+}
+```
+Output of the above code is:
+```
+A, 5
+B, 4
+C, 3
+D, 2
+E, 1
+=====
+E, 1
+D, 2
+C, 3
+B, 4
+A, 5
+```
+_________________________________
+## Binary search
+* `Collections.binarySearch(sortedCollection, searchValue)`
+* `Collections.binarySearch(sortedCollection, searchValue, comparator)`
+* Do [LeetCode300](https://leetcode.com/problems/longest-increasing-subsequence/).
+* What `Collections.binarySearch` returns? 
+> The index of the search key, if it is contained in the list; otherwise, (-(insertion point) - 1). The insertion point is defined as the point at which the key would be inserted into the list: the index of the first element greater than the key, or list.size() if all elements in the list are less than the specified key. Note that this guarantees that the return value will be >= 0 if and only if the key is found.
+* See how to properly apply `Collections.binarySearch` in 
+_________________________________
+## Sort
+* Custom comparator
+* sorting `java.util.List`
+    * Custom `Comparator` given in `Collections#sort` is given more preferenece over `Comparable` which the `Person` class implements.
+    ```java
+    import java.util.Arrays;
+    import java.util.Collections;
+
+    public class ListSortingExample {
+        public static void main(String[] args) {
+            Person p1 = new Person("A", 3);
+            Person p2 = new Person("B", 2);
+            Person p3 = new Person("C", 1);
+
+            Person[] persons = new Person[]{p1, p2, p3};
+            Collections.sort(Arrays.asList(persons)); // this will sort by Comparable - sorting by age
+            printPersonArray(persons);
+
+            Person[] persons1 = new Person[]{p1, p2, p3};
+            Collections.sort(Arrays.asList(persons1), (person1, person2)->
+                    person1.getName().compareTo(person2.getName()));
+            printPersonArray(persons1); // sorted by name
+
+        }
+        private static void printPersonArray(Person[] persons) {
+            for(int i=0;i<persons.length;i++) {
+                System.out.print(persons[i]);
+            }
+            System.out.println();
+        }
+        private static class Person implements Comparable<Person> {
+            private final String name;
+            private final int age;
+
+            Person(String name, int age) {
+                this.name = name;
+                this.age = age;
+            }
+
+            public String getName() {
+                return name;
+            }
+
+            @Override
+            public String toString() {
+                return "["+name + ", " + age+"]";
+            }
+
+            @Override
+            public int compareTo(Person p) {
+                return age - p.age;
+            }
+        }
+    }
+    ```
+    output:
+    ```
+    [C, 1][B, 2][A, 3]
+    [A, 3][B, 2][C, 1]
+    ```
+
+* sorting arrays
+    * Custom `Comparator` given in `Arrays#sort` is given more preferenece over `Comparable` which the `Person` class implements.
+    ```java
+    import java.util.Arrays;
+
+    public class ArraysSortExample {
+        public static void main(String[] args) {
+            Person p1 = new Person("A", 3);
+            Person p2 = new Person("B", 2);
+            Person p3 = new Person("C", 1);
+
+            Person[] persons = new Person[]{p1, p2, p3};
+            Arrays.sort(persons); // this will sort by Comparable - sorting by age
+            printPersonArray(persons);
+
+            Person[] persons1 = new Person[]{p1, p2, p3};
+            Arrays.sort(persons1, (person1, person2)-> person1.getName().compareTo(person2.getName()));
+            printPersonArray(persons1); // sorted by name
+
+        }
+        private static void printPersonArray(Person[] persons) {
+            for(int i=0;i<persons.length;i++) {
+                System.out.print(persons[i]);
+            }
+            System.out.println();
+        }
+        private static class Person implements Comparable<Person> {
+            private final String name;
+            private final int age;
+
+            Person(String name, int age) {
+                this.name = name;
+                this.age = age;
+            }
+
+            public String getName() {
+                return name;
+            }
+
+            @Override
+            public String toString() {
+                return "["+name + ", " + age+"]";
+            }
+
+            @Override
+            public int compareTo(Person p) {
+                return age - p.age;
+            }
+        }
+    }
+
+    ```
+    output:
+    ```
+    [C, 1][B, 2][A, 3]
+    [A, 3][B, 2][C, 1]
+    ```
+_________________________________
+## floor/ceil operations in a  sorted data structure
+_________________________________
+## Signed and unsigned bitwise operators
+_________________________________
+## creating copy of a list
+_________________________________
+## Map - `java.util.Map`
+* `TreeMap`
+* `HashMap`
+_________________________________
+## Set - `java.util.Set`
+_________________________________
+## BitSet - `java.util.BitSet` 
+_________________________________
