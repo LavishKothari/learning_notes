@@ -41,7 +41,7 @@
     * [With respect to a non-prime](#with-respect-to-a-non-prime)
   * [Finding all SubStrings nC2 + n](#finding-all-substrings-nc2-+-n)
   * [Recursive function to print all permutations of a String](#recursive-function-to-print-all-permutations-of-a-string)
-  * [Printing all lexicographic permutations of String-(non-recursive)](#printing-all-lexicographic-permutations-of-string-non-recursive)
+  * [Printing all lexicographic permutations of String (non-recursive)](#printing-all-lexicographic-permutations-of-string-(non-recursive))
   * [Finding all the sub-sets of a given set (Power-set) - Recursive](#finding-all-the-sub-sets-of-a-given-set-(power-set)---recursive)
   * [Finding all the sub-sets of a given set (Power-set) - Iterative](#finding-all-the-sub-sets-of-a-given-set-(power-set)---iterative)
   * [Finding the number of ways in which `n` can be expressed as a sum of `k` different numbers](#finding-the-number-of-ways-in-which-`n`-can-be-expressed-as-a-sum-of-`k`-different-numbers)
@@ -94,8 +94,19 @@
   * [Finding cycles in undirected graph](#finding-cycles-in-undirected-graph)
   * [Finding cycles in directed graph](#finding-cycles-in-directed-graph)
   * [DFS - Longest path in a DAG](#dfs---longest-path-in-a-dag)
-  * [Disjoint Set](#disjoint-set-(union-find))
+  * [Disjoint Set (Union-find)](#disjoint-set-(union-find))
+* [Programming language utilities (Specifically for Java)](#programming-language-utilities-(specifically-for-java))
+  * [Priority Queues](#priority-queues)
+  * [Binary search](#binary-search)
+  * [Sort](#sort)
+  * [floor/ceil operations in a  sorted data structure](#floor/ceil-operations-in-a--sorted-data-structure)
+  * [Signed and unsigned bitwise operators](#signed-and-unsigned-bitwise-operators)
+  * [creating copy of a list](#creating-copy-of-a-list)
+  * [Map - `java.util.Map`](#map---`java.util.map`)
+  * [Set - `java.util.Set`](#set---`java.util.set`)
+  * [BitSet - `java.util.BitSet`](#bitset---`java.util.bitset`)
 
+  
 # Data Structures
 
 ## Arrays
