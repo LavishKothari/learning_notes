@@ -105,6 +105,8 @@
   * [Map - `java.util.Map`](#map---`java.util.map`)
   * [Set - `java.util.Set`](#set---`java.util.set`)
   * [BitSet - `java.util.BitSet`](#bitset---`java.util.bitset`)
+  * [Stack In Java](#stack-in-java)
+  * [Queue In Java](#queue-in-java)
 
   
 # Data Structures
@@ -128,6 +130,9 @@
  * InOrder, PreOrder and PostOrder tree traversals
  * Infix, prefix and postfix evaluation
  * effectively every recursive problem can be modelled to an iterative one using Stack
+ * Pervious smaller number for every element of the array [LeetCode84](https://leetcode.com/problems/largest-rectangle-in-histogram/)
+ * Next Smaller number for every element of the array [LeetCode84](https://leetcode.com/problems/largest-rectangle-in-histogram/)
+ * Largest rectangle in a histogram [LeetCode84](https://leetcode.com/problems/largest-rectangle-in-histogram/)
 
 ## Queue
 * First-In First-Out
@@ -345,27 +350,29 @@ public class IterativeModularExponentiation {
 _________________________________
 
 ## Power function for negative/positive exponents
-(make sure to have proper method signature - this shows how carefully you design your API)
+* Make sure to have proper method signature - this shows how carefully you design your API
+* [LeetCode50](https://leetcode.com/problems/powx-n/)
 ```java
-public class GenericPower {
+public class LeetCode50 {
     public static void main(String[] args) {
-        System.out.println(new GenericPower().genericPower(1, 324));
-        System.out.println(new GenericPower().genericPower(345, 1));
-        System.out.println(new GenericPower().genericPower(1, -2));
-        System.out.println(new GenericPower().genericPower(2, -4));
+        System.out.println(new LeetCode50().myPow(2.0, 10));
+        System.out.println(new LeetCode50().myPow(2.1, 3));
+        System.out.println(new LeetCode50().myPow(2.0, -2));
+        System.out.println(new LeetCode50().myPow(2.0, 10));
+
     }
 
-    public double genericPower(double a, int b) {
-        if (b == 0) return 1;
-        if (a == 1) return 1;
-
-        double temp = genericPower(a, b / 2);
-        if (b % 2 == 0) {
-            return temp * temp;
-        } else {
-            if (b < 0) return temp * temp / a;
-            else return temp * temp * a;
-        }
+    public double myPow(double x, int n) {
+        if (n == 0)
+            return 1;
+        if (n == 1)
+            return x;
+        double temp = myPow(x, n / 2);
+        if ((n & 1) != 0 && n < 0)
+            return temp * temp / x;
+        else if ((n & 1) != 0 && n > 0)
+            return temp * temp * x;
+        return temp * temp;
     }
 }
 
@@ -1099,6 +1106,68 @@ public class LeetCode104 {
 ```
 ## Tree-Traversals
 ### InOrder
+* Recursive and iterative (using stack)
+* [LeetCode94](https://leetcode.com/problems/binary-tree-inorder-traversal/)
+
+```java
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.LinkedList;
+import java.util.List;
+
+public class LeetCode94 {
+    public static void main(String[] args) {
+        TreeNode root = new TreeNode(1);
+        root.right = new TreeNode(2);
+        root.right.left = new TreeNode(3);
+        System.out.println(new LeetCode94().inorderTraversal(root));
+
+    }
+
+    public List<Integer> inorderTraversal(TreeNode root) {
+        List<Integer> list = new ArrayList<>();
+        iterative(root, list);
+        return list;
+    }
+
+    private void iterative(TreeNode root, List<Integer> list) {
+        Deque<TreeNode> stack = new LinkedList<>();
+        while (root != null) {
+            stack.push(root);
+            root = root.left;
+        }
+        while (stack.size() != 0) {
+            TreeNode currentRoot = stack.pop();
+            list.add(currentRoot.val);
+            currentRoot = currentRoot.right;
+            while (currentRoot != null) {
+                stack.push(currentRoot);
+                currentRoot = currentRoot.left;
+            }
+        }
+    }
+
+    private void recursive(TreeNode root, List<Integer> list) {
+        if (root == null)
+            return;
+        recursive(root.left, list);
+        list.add(root.val);
+        recursive(root.right, list);
+    }
+
+    private static class TreeNode {
+        int val;
+        TreeNode left;
+        TreeNode right;
+
+        TreeNode(int x) {
+            val = x;
+        }
+    }
+
+}
+```
+
 ### PreOrder
 ### PostOrder
 ### Level Order Traversal
@@ -1734,4 +1803,25 @@ _________________________________
 ## Set - `java.util.Set`
 _________________________________
 ## BitSet - `java.util.BitSet` 
+_________________________________
+## Stack In Java
+* Use `java.util.Deque` for Stack
+
+    ```java
+    Deque<Integer> stack = new LinkedList<>();
+    stack.push(10); // push 10 at the top of the stack
+    stack.pop(); // pop the top of the stack
+    stack.peek(); // peek on the top of the stack (without removing it)
+    // stack.peek() is same as stack.peekFirst()
+    ```
+_________________________________
+## Queue In Java
+* Use `java.util.Deque` for Queues
+    ```java
+    Deque<Integer> queue = new LinkedList<>();
+    queue.offer(10); // enqueues 10 in the queue at front
+    queue.poll(); // dequeues the front of the queue
+    queue.peek(); // peek in the front of the queue (without removing it)
+    // queue.peek() is same as queue.peekFirst()
+    ```
 _________________________________
