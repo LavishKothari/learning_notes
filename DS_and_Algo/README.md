@@ -398,6 +398,20 @@ public class CountOnes {
         }
         return answer;
     }
+    /**
+     * Works only for integers greater than equals to 0
+     * 
+     * Time Complexity: O(count of 1s in the number)
+     */
+    public int countOnesGood(int n) {
+        int c = 0;
+        while (n != 0) {
+            c++;
+            n = (n & (n - 1));
+        }
+        return c;
+    }
+
 }
 ```
 _________________________________
@@ -1607,9 +1621,14 @@ _________________________________
     * Assume that we are given that all the patterns will be of length `m` or less.
     * We can pre-compute the rolling hash starting at every index and for ever substring of length `m` or less. This pre-computation will take `O(m*n)`.
     * Then for each length of substring (`<=m`) we can store a list of starting indices that have same hash. 
-    * This initial construction will take `O(m*n)`, but after that, every query can be answered in `O(m*log(n))`. This factor of `m` exists becuase we will have to calculate the hash of pattern.
+    * This initial construction will take `O(m*n)`, but after that, every query can be answered in `O(m)`. This factor of `m` exists becuase we will have to calculate the hash of pattern.
     * The space complexity of this approach is `O(m*n)`
     * I like this approach because usually `m` is very small in practical test editors.
+    * More concrete thought:
+        * If `m=10`
+        * I'll store 10 `HashMap<Integer, List<Integer>>` where key is `hash` and the value is list of indices in the text where we got this hash. Each `HashMap` corresponds to the size of the pattern we are targetting. (And we assumed that all the patterns will be of size `m` or less)
+        * Now querying on this hashMap that whether some key exists or not can be done in `O(1)` amortized.
+        * so at the end everything boils down to calculating the hash of pattern and then choosing map that corresponds to the size of the pattern and querying in that map (this takes `O(1)`) and finally actually checking the pattern and the text - this actual checking will take `O(m)*number of occurrences` (to confirm that it was not a suprious hit)
 
 ```java
 import java.util.ArrayList;
@@ -1716,6 +1735,8 @@ _________________________________
 * Construct PriorityQueue using `PriorityQueue<Person> personPriorityQueue = new PriorityQueue<>((p1, p2) -> p1.getName().compareTo(p2.getName()));`
 * This implementation provides `O(log(n))` time for the enqueuing and dequeuing methods (`offer`, `poll`, `remove` and `add`)
 * If the `PriorityQueue` is of type `Person` and `Person` implements `Comparable<Person>`, at the same time you have provided `Comparator<Person>` while constructing the queue, then the custom `Comparator` provided when constructing the queue will be given the preference over the `Comparable` that `Person` implements.
+* You can have duplicate elements in `PriorityQueue`. During retrieval the ties between duplicate elements are broking arbitrarily.
+
 ```java
 import java.util.PriorityQueue;
 
