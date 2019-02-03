@@ -95,6 +95,7 @@
   * [Finding cycles in directed graph](#finding-cycles-in-directed-graph)
   * [DFS - Longest path in a DAG](#dfs---longest-path-in-a-dag)
   * [Disjoint Set (Union-find)](#disjoint-set-(union-find))
+  * [String pattern matching](#string-pattern-matching)
 * [Programming language utilities (Specifically for Java)](#programming-language-utilities-(specifically-for-java))
   * [Priority Queues](#priority-queues)
   * [Binary search](#binary-search)
@@ -1596,6 +1597,19 @@ _________________________________
 * Rabin-Karp 
     * Best and average case time compleity = `O(n-m)`
     * Worst case time complexity = `O(mn)`
+    * [Rolling hash function](https://en.wikipedia.org/wiki/Rolling_hash) - getting the hash from previous hash in constant time
+    * if you have weak hash function you have spurious hit
+* KMP algorithm
+    * Wost case Time complexity - `O(m+n)`
+    * space complexity - `O(m)`
+
+* **Just a thought** - Extension of Rabin-Karp
+    * Assume that we are given that all the patterns will be of length `m` or less.
+    * We can pre-compute the rolling hash starting at every index and for ever substring of length `m` or less. This pre-computation will take `O(m*n)`.
+    * Then for each length of substring (`<=m`) we can store a list of starting indices that have same hash. 
+    * This initial construction will take `O(m*n)`, but after that, every query can be answered in `O(m*log(n))`. This factor of `m` exists becuase we will have to calculate the hash of pattern.
+    * The space complexity of this approach is `O(m*n)`
+    * I like this approach because usually `m` is very small in practical test editors.
 
 ```java
 import java.util.ArrayList;
@@ -1624,17 +1638,11 @@ public class StringPatternMatch {
         System.out.println(new StringPatternMatch().matchRabinKarp("AABAACAADAABAABA", "AABA"));
         System.out.println(new StringPatternMatch().matchRabinKarp("AAAAA", "AAA"));
         System.out.println(new StringPatternMatch().matchRabinKarp(longText, "electronic"));
-
-
     }
 
     /**
      * Time complexity - O((n-m)*(m)) where
      * m is the length of pattern, and n is the lenght of string
-     *
-     * @param str
-     * @param pattern
-     * @return
      */
     public List<Integer> matchNaive(String str, String pattern) {
         List<Integer> result = new ArrayList<>();
