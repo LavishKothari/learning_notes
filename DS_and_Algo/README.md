@@ -2129,7 +2129,7 @@ _________________________________
 * Use `java.util.Deque` for Stack
 
     ```java
-    Deque<Integer> stack = new LinkedList<>();
+    Deque<Integer> stack = new ArrayDeque<>();
     stack.push(10); // push 10 at the top of the stack
     stack.pop(); // pop the top of the stack
     stack.peek(); // peek on the top of the stack (without removing it)
@@ -2139,7 +2139,7 @@ _________________________________
 ## Queue In Java
 * Use `java.util.Deque` for Queues
     ```java
-    Deque<Integer> queue = new LinkedList<>();
+    Deque<Integer> queue = new ArrayDeque<>();
     queue.offer(10); // enqueues 10 in the queue at front
     queue.poll(); // dequeues the front of the queue
     queue.peek(); // peek in the front of the queue (without removing it)
