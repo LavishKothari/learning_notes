@@ -50,7 +50,8 @@ public class SQ1 {
 ```
 
 ### Question 2 - Finding the number of edges
-
+* The following code shows what I thought during interview
+* Another approach can be to count the total number of edges (from  `a` to `b` and also from `b` to `a`) and then divide it by 2.
 ```java
 package gs;
 
