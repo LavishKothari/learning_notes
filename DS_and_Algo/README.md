@@ -25,7 +25,7 @@
       * [Dynamic Programming](#dynamic-programming)
   * [Graph](#graph)
 * [Problem Solving](#problem-solving)
-* [My custom preparation (DataDump)](#my-custom-preparation-(datadump))
+* [My custom preparation (DataDump)](#my-custom-preparation-datadump)
   * [isPrime](#isprime)
   * [Recursive Extended Euclidean Theorem](#recursive-extended-euclidean-theorem)
   * [Euclidean Algorithm for GCD](#euclidean-algorithm-for-gcd)
