@@ -221,7 +221,9 @@
 # Problem Solving
 * Simulating division - [LeetCode166](https://leetcode.com/problems/fraction-to-recurring-decimal/)
 * [4Sum - LeetCode454](https://leetcode.com/problems/4sum-ii/) (good)
-* Decode Strings[LeetCode394](https://leetcode.com/problems/decode-string/) (good)
+    * To be done with Time Complexity = `O(n^2)`
+    * Space complexity = `O(n^2)`
+* Decode Strings [LeetCode394](https://leetcode.com/problems/decode-string/) (good)
 
 
 
@@ -269,6 +271,10 @@ _________________________________
 _________________________________
 
 ## Euclidean Algorithm for GCD
+* This will be used to reduce the fraction to the lowest terms.
+* Make sure that the fraction should not have the numerator or denominator as negative.
+    * To be on the safe side, maintain negative and numberator and denominator separately.
+
 ```java
 /**
  * Eculidean algorithm for finding GCD of 2 numbers
@@ -289,6 +295,8 @@ public class GCD {
 _________________________________
 
 ## Recursive Modular Exponentiation
+* Time Complexity = `O(log(b))` to calculate `a^b`
+* (using bitwise-operators can be an advantage, but now-a-days compilers are smart enough to do this on your behalf - so you might not care about this)
 ```java
 /*
     (anything, 0, anything) answer should be 1
@@ -308,9 +316,8 @@ public class RecursiveModularExponentiation {
 
     public long power(long a, long b, long mod) {
         if (b == 0) return 1;
-        if (b == 1) return a % mod; // don’t make a mistake by just returning a
         long temp = power(a, b >> 1, mod);
-        if ((b & 1) == 1) {
+        if ((b & 1) == 1) { // don't forget to put (b&1) in brackets
             return (((temp * temp) % mod) * a) % mod;
         } else {
             return (temp * temp) % mod;
@@ -319,7 +326,6 @@ public class RecursiveModularExponentiation {
 
     public long powerAlternative(long a, long b, long mod) {
         if (b == 0) return 1;
-        if (a == 1) return a % mod;
         if ((b & 1) == 1) {
             return (a * powerAlternative((a * a) % mod, b >> 1, mod)) % mod;
         } else {
@@ -331,7 +337,8 @@ public class RecursiveModularExponentiation {
 _________________________________
 
 ## Iterative Modular Exponention
-(using bitwise-operators can be an advantage, but now-a-days compilers are smart enough to do this on your behalf - so you might not care about this)
+* Time complexity = `O(log(b))` to calculate `a^b`.
+* (using bitwise-operators can be an advantage, but now-a-days compilers are smart enough to do this on your behalf - so you might not care about this)
 ```java
 public class IterativeModularExponentiation {
     public static void main(String[] args) {
@@ -340,7 +347,7 @@ public class IterativeModularExponentiation {
         System.out.println(new IterativeModularExponentiation().power(2, 10, 100)); // returns 24
     }
     public long power(long a, long b, long mod) {
-        long tempResult = 1, result = 1;
+        long result = 1;
         while (b != 0) {
             if ((b & 1) == 1)
                 result = (result * a) % mod;
@@ -359,18 +366,17 @@ _________________________________
 ```java
 public class LeetCode50 {
     public static void main(String[] args) {
-        System.out.println(new LeetCode50().myPow(2.0, 10));
-        System.out.println(new LeetCode50().myPow(2.1, 3));
-        System.out.println(new LeetCode50().myPow(2.0, -2));
-        System.out.println(new LeetCode50().myPow(2.0, 10));
-
+        System.out.println(new LeetCode50().myPow(2.0, 10)); // 1024.0
+        System.out.println(new LeetCode50().myPow(2.1, 3)); // 9.261
+        System.out.println(new LeetCode50().myPow(2.0, -2)); // 0.25
+        System.out.println(new LeetCode50().myPow(2.0, 10)); // 1024.0
+        System.out.println(new LeetCode50().myPow(3.21, 1)); // 3.21
+        System.out.println(new LeetCode50().myPow(3.21, -1)); // 0.3115264797507788
     }
 
     public double myPow(double x, int n) {
         if (n == 0)
             return 1;
-        if (n == 1)
-            return x;
         double temp = myPow(x, n / 2);
         if ((n & 1) != 0 && n < 0)
             return temp * temp / x;
@@ -379,7 +385,6 @@ public class LeetCode50 {
         return temp * temp;
     }
 }
-
 ```
 _________________________________
 
@@ -420,7 +425,8 @@ public class CountOnes {
 _________________________________
 
 ## Seive of Erasthones (using BitSet)
-(You should know how to use BitSet or equivalent in the programming language that you are coding in.)
+* (You should know how to use `BitSet` or equivalent in the programming language that you are coding in.)
+* Time complexity = `O(nlog(log(n)))`
 ```java
 import java.util.*;
 
@@ -511,7 +517,7 @@ _________________________________
 
 ## Finding Modular Multiplicative Inverse
 ### With respect to a prime
-* Using Euler's theorem `a^phi(n) = 1 (mod)` if `a` and `n` are coprime (their GCD is 1).
+* Using Euler's theorem `a^phi(n) = 1 (mod n)` if `a` and `n` are coprime (their GCD is 1).
 * If `p` is a prime then, `phi(p) = p-1`.
 * `a^(p-1) = 1 (mod p)` if `p` is prime and `a` & `p` are co-prime (this is Fermatt's Little theorem). This gives `a^(-1) = a^(p-2) (mod p)`. You can calculate this using modular exponentiation.
 
@@ -589,33 +595,40 @@ _________________________________
 
 ## Finding all the sub-sets of a given set (Power-set) - Recursive
 ```java
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
-class PowerSetRecursive {
+public class PowerSetRecursive {
     public static void main(String[] args) {
-        System.out.println(new PowerSetRecursive().powerSet(Arrays.asList(new Integer[]{1, 2, 3})));
+        System.out.println(new PowerSetRecursive().getPowerSetRecursive(Arrays.asList(1, 2, 3)));
+        System.out.println(new PowerSetRecursive().getPowerSetRecursive(Arrays.asList(1, 2, 3, 4, 5)).size()); // should be 32
+        System.out.println(new PowerSetRecursive().getPowerSetRecursive(Arrays.asList())); // empty list
+        System.out.println(new PowerSetRecursive().getPowerSetRecursive(null)); // null list
     }
 
-    public List<List<Integer>> powerSet(List<Integer> set) {
-        return powerSet(set, 0);
+    public List<List<Integer>> getPowerSetRecursive(List<Integer> list) {
+        return getPowerSetRecursive(list, 0);
     }
 
-    private List<List<Integer>> powerSet(List<Integer> set, int counter) {
-        if (counter == set.size()) {
-            List<List<Integer>> list = new ArrayList<>();
-            list.add(new ArrayList<>()); // don't forget this
-            return list;
+    private List<List<Integer>> getPowerSetRecursive(List<Integer> list, int counter) {
+        List<List<Integer>> result = new ArrayList<>();
+        if (list == null || counter == list.size()) {
+            result.add(Collections.emptyList());
+            return result;
         }
-        List<List<Integer>> list1 = powerSet(set, counter + 1);
-        List<List<Integer>> list2 = new ArrayList<>();
-        for (List<Integer> cl : list1) {
+
+        List<List<Integer>> prevList = getPowerSetRecursive(list, counter + 1);
+        result.addAll(prevList);
+        for (List<Integer> cl : prevList) {
             List<Integer> tempList = new ArrayList<>(cl);
-            tempList.add(set.get(counter));
-            list2.add(tempList);
+            tempList.add(list.get(counter));
+            result.add(tempList);
         }
-        list1.addAll(list2);
-        return list1;
+        return result;
     }
+
 }
 ```
 
@@ -633,7 +646,9 @@ class PowerSetIterative {
         System.out.println(new PowerSetIterative().powerSetIterative(Arrays.asList(new Integer[]{1, 2, 3})));
     }
 
-    public List<List<Integer>> powerSetIterative(List<Integer> list) {
+	public List<List<Integer>> powerSetIterative(List<Integer> list) {
+		if (list == null || list.size() == 0)
+    		return Collections.emptyList();
         List<List<Integer>> result = new ArrayList<>();
         int power = (1 << list.size());
         for (int i = 0; i < power; i++) {
@@ -2201,6 +2216,15 @@ _________________________________
 ## Set - `java.util.Set`
 _________________________________
 ## BitSet - `java.util.BitSet` 
+* Constructors
+    * `BitSet bitSet = new BitSet(1000);` - creates a `BitSet` with `1000` bits. All are set to `false` initially. (You can even do `bitSet.set(1100, true);` - the `BitSet` will expand automatically.)
+	* `BitSet bitSet = new BitSet();` - creates an empty `BitSet` with all bits `false` initially.
+* Utility methods
+	* `clear(index)` sets the bit at `index` to `false`
+	* `set(index)` sets the bit at `index` to `true`
+	* `set(index, value)` sets the bit at `index` to `value` (value is `boolean`)
+	* `length()` - Returns the "logical size" of this BitSet: the index of the highest set bit in the BitSet plus one. Returns zero if the BitSet contains no set bits.
+	* `flip(int fromIndex, int toIndex)` Sets each bit from the specified fromIndex (inclusive) to the specified toIndex (exclusive) to the complement of its current value.
 _________________________________
 ## Stack In Java
 * Use `java.util.Deque` for Stack
