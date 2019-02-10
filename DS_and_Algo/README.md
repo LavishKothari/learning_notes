@@ -98,7 +98,9 @@
   * [String pattern matching](#string-pattern-matching)
   * [Search in a rotated sorted array](#search-in-a-rotated-sorted-array)
   * [Find first and last position of an element in sorted array](#find-first-and-last-position-of-an-element-in-sorted-array)
+* [Some Tricky or tough problems](#some-tricky-or-tough-problems)
   * [Rotating 2-D square matrix](#rotating-2-d-square-matrix)
+  * [Median of 2 sorted Arrays](#median-of-2-sorted-arrays)
 * [Programming language utilities (Specifically for Java)](#programming-language-utilities-(specifically-for-java))
   * [Priority Queues](#priority-queues)
   * [Binary search in Java](#binary-search-in-java)
@@ -112,43 +114,47 @@
   * [Stack In Java](#stack-in-java)
   * [Queue In Java](#queue-in-java)
 
-  
 # Data Structures
 
 ## Arrays
+
 * Collection of items stored at contiguous memory location
 * Random Access
 * Growing or shrinking the array is difficult, all the previous elements need to be relocated
 * Because of contiguous storage, you have better cache locality (more cache hits and so preformance advantage)
 
 ## Linked-List
+
 * Elements are not stored at contiguous memory locations
 * No Random access
 * Bad cache utilization
 * growing/shrinking the list is inherently supported
 
 ## Stack
+
 * Last-In First-Out
 * Usage:
- * DFS
- * InOrder, PreOrder and PostOrder tree traversals
- * Infix, prefix and postfix evaluation
- * effectively every recursive problem can be modelled to an iterative one using Stack
- * Pervious smaller number for every element of the array [LeetCode84](https://leetcode.com/problems/largest-rectangle-in-histogram/)
- * Next Smaller number for every element of the array [LeetCode84](https://leetcode.com/problems/largest-rectangle-in-histogram/)
- * Largest rectangle in a histogram [LeetCode84](https://leetcode.com/problems/largest-rectangle-in-histogram/)
+  * DFS
+  * InOrder, PreOrder and PostOrder tree traversals
+  * Infix, prefix and postfix evaluation
+  * effectively every recursive problem can be modelled to an iterative one using Stack
+  * Pervious smaller number for every element of the array [LeetCode84](https://leetcode.com/problems/largest-rectangle-in-histogram/)
+  * Next Smaller number for every element of the array [LeetCode84](https://leetcode.com/problems/largest-rectangle-in-histogram/)
+  * Largest rectangle in a histogram [LeetCode84](https://leetcode.com/problems/largest-rectangle-in-histogram/)
 
 ## Queue
+
 * First-In First-Out
 * Usage:
-	* BFS
-	* Priority queues are used in Dijkstras
+    * BFS
+    * Priority queues are used in Dijkstras
 
 ## Binary Tree
 
 ## Binary Search Tree
 
 ## Self Balancing Tree
+
 * B Tree
 * B+ Tree
 * SelfBalancing Binary Search Tree
@@ -160,22 +166,26 @@
 		* the longest root-to-leaf path can be in worst case at max double of the shortest root-to-leaf path.
 
 ## Heap (basically a priority queue - implemented as array)
+
 * Min-Heap
 * Max-Heap
 * Binomial Heap
 * Fibonnacci Heap
 
 ## Hash-Table
+
 * Collision Handling Technique
 	* Separate chaining
 	* Open addressing
 
 ## Graph
+
 * Tree (a connected graph with no cycles)
 	* Directed/undirected
 	* Weighted/unweighted
 
 ## Segment Tree
+
 * Lazy propogation in segment tree
 
 ## Suffix Array and Suffix Tree
@@ -183,6 +193,7 @@
 ## Binary-Indexed Tree
 
 ## Trie
+
 * [LeetCode2018](https://leetcode.com/problems/implement-trie-prefix-tree/)
 
 ## Splay Tree
@@ -193,19 +204,28 @@
 
 # Algorithms
 ## Basic recursion
+
 * [LeetCode337](https://leetcode.com/problems/house-robber-iii/)
 
 ## Binary Search
+
 * A variant - [LeetCode162](https://leetcode.com/problems/find-peak-element/)
+
 #### Sorting
+
 * [with custom comparator](https://leetcode.com/problems/largest-number/)
+
 #### Divide and Conquer
+
 #### Greedy Algorithms
+
 #### Dynamic Programming
+
 * Subset Sum Problem [LeetCode416](https://leetcode.com/problems/partition-equal-subset-sum/)
 * Variant of coin change problem [LeetCode279](https://leetcode.com/problems/perfect-squares/)
 
 ## Graph
+
 * Basic Traversal - [LeetCode310](https://leetcode.com/problems/minimum-height-trees/)
 * BFS - [LeetCode200](https://leetcode.com/problems/number-of-islands/)
 * DFS - [LeetCode200](https://leetcode.com/problems/number-of-islands/)
@@ -219,6 +239,7 @@
     * Simple DFS and while doing DFS if you get a "back-edge" (an edge from curent vertex to a partially visited vertex) then the graph contains cycles.
 
 # Problem Solving
+
 * Simulating division - [LeetCode166](https://leetcode.com/problems/fraction-to-recurring-decimal/)
 * [4Sum - LeetCode454](https://leetcode.com/problems/4sum-ii/) (good)
     * To be done with Time Complexity = `O(n^2)`
@@ -228,8 +249,11 @@
 
 
 # My custom preparation (DataDump)
+
 ## isPrime
+
 Time complexity = `O(sqrt(n))` if you find whether `n` is prime or not.
+
 ```java
 /*
 0 false
@@ -265,12 +289,13 @@ public class PrimeChecker {
 }
 
 ```
+
 _________________________________
 
 ## Recursive Extended Euclidean Theorem
-_________________________________
 
 ## Euclidean Algorithm for GCD
+
 * This will be used to reduce the fraction to the lowest terms.
 * Make sure that the fraction should not have the numerator or denominator as negative.
     * To be on the safe side, maintain negative and numberator and denominator separately.
@@ -292,11 +317,14 @@ public class GCD {
     }
 }
 ```
+
 _________________________________
 
 ## Recursive Modular Exponentiation
+
 * Time Complexity = `O(log(b))` to calculate `a^b`
 * (using bitwise-operators can be an advantage, but now-a-days compilers are smart enough to do this on your behalf - so you might not care about this)
+
 ```java
 /*
     (anything, 0, anything) answer should be 1
@@ -337,8 +365,10 @@ public class RecursiveModularExponentiation {
 _________________________________
 
 ## Iterative Modular Exponention
+
 * Time complexity = `O(log(b))` to calculate `a^b`.
 * (using bitwise-operators can be an advantage, but now-a-days compilers are smart enough to do this on your behalf - so you might not care about this)
+
 ```java
 public class IterativeModularExponentiation {
     public static void main(String[] args) {
@@ -361,8 +391,10 @@ public class IterativeModularExponentiation {
 _________________________________
 
 ## Power function for negative/positive exponents
+
 * Make sure to have proper method signature - this shows how carefully you design your API
 * [LeetCode50](https://leetcode.com/problems/powx-n/)
+
 ```java
 public class LeetCode50 {
     public static void main(String[] args) {
@@ -389,7 +421,9 @@ public class LeetCode50 {
 _________________________________
 
 ## Counting number of 1 in binary representation of a number
+
 Make sure that you get correct answer for both positive  and negative numbers.
+
 ```java
 public class CountOnes {
     public static void main(String[] args) {
@@ -425,8 +459,10 @@ public class CountOnes {
 _________________________________
 
 ## Seive of Erasthones (using BitSet)
+
 * (You should know how to use `BitSet` or equivalent in the programming language that you are coding in.)
 * Time complexity = `O(nlog(log(n)))`
+
 ```java
 import java.util.*;
 
@@ -455,6 +491,7 @@ public class SieveOfEratosthenes {
 _________________________________
 
 ## Number of Divisors using Array
+
 * You need to write a method that returns an array, say `arr` such that `arr[i]` stores the count of divisors of `i`.
 * Divisors of `12` are `{1, 2, 3, 4, 6, 12}`.
 * If you are asked for the proper divisors, you don't need to count the number itself while counting divisors. Proper Divisors of `12` are `{1, 2, 3, 4, 6}`
@@ -513,20 +550,25 @@ public class SumOfDivisors {
     }
 }
 ```
+
 _________________________________
 
 ## Finding Modular Multiplicative Inverse
+
 ### With respect to a prime
+
 * Using Euler's theorem `a^phi(n) = 1 (mod n)` if `a` and `n` are coprime (their GCD is 1).
 * If `p` is a prime then, `phi(p) = p-1`.
 * `a^(p-1) = 1 (mod p)` if `p` is prime and `a` & `p` are co-prime (this is Fermatt's Little theorem). This gives `a^(-1) = a^(p-2) (mod p)`. You can calculate this using modular exponentiation.
 
 ### With respect to a non-prime
+
 * To calculate multiplicative modular inverse of `a` wrt `m`, it's only possible if `a` and `m` are co-prime.
 * Using Extended Euclidean Theorem you can write `ax + my = 1` where `x` and `y` are integers. Here `x` is the multiplicative inverse of `a` with respect to `m`.
 _________________________________
 
 ## Finding all SubStrings nC2 + n
+
 * There are a total of `nC2 + n` substrings for a given string of length `n`. (choose any 2 indices out of n - this accounts for the `nC2` - all the strings with length 2 or greater than 2, add `n` to take into acoount substrings of length `1`).
 
 ```java
@@ -548,9 +590,11 @@ public class SubStrings {
     }
 }
 ```
+
 _________________________________
 
 ## Recursive function to print all permutations of a String
+
 * For `Sun` the output should be something like: `[Sun, Snu, uSn, unS, nuS, nSu]`
 
 ```java
@@ -588,12 +632,15 @@ public class StringPermutation {
     }
 }
 ```
+
 _________________________________
 
 ## Printing all lexicographic permutations of String (non-recursive)
+
 _________________________________
 
 ## Finding all the sub-sets of a given set (Power-set) - Recursive
+
 ```java
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -667,17 +714,21 @@ class PowerSetIterative {
     }
 }
 ```
+
 _________________________________
 ## Finding the number of ways in which `n` can be expressed as a sum of `k` different numbers
+
 * `k` non-zero numbers
 * Suppose you need to find number of ways in which `10` can be expresses as a sum of `4` different non-zero numbers.
  * To visualize, assume you have an array of `10` elements and each element of the array is `1`.
  * there are a total of 9 internal boundaries in this array and and you need to choose `3` of them to partition this arrya of `1`s into 4 non-zero parts.
  * so for `n=10` and `k=4`, then answer is `9C3` = `84`
 * The answer comes out to be `(n-1)C(k-1)`
+
 _________________________________
 
 ## Calculate `nCk (mod p)` (where `p` is prime)
+
 * Idea:
     * don't repeatedly calculte the same factorials, instead store the factorials in an array and avoid recomputing.
     * As `p` is prime, you can apply Fermat's little theorem to calculate modular inverse.
@@ -724,6 +775,7 @@ _________________________________
  ```
 
 ## Fibonacci numbers
+
 * Using recursion
 * Using DP
 * Using no extra memory
@@ -774,36 +826,46 @@ public class FibonacciNumbers {
     }
 }
 ```
+
 * Some facts about Fibonacci Numbers:
  * calculating Fibonacci numbers using Golden Ratio:
    * `F(n) = floor(phi^n / sqrt(5) + 0.5)` where `phi` is the golden ratio.
    * Using this above formula, you can calculate the `n`th fibonacci number in time complexity `O(log(n))`.
  * calculating Fibonacci numbers using matrix
- ```
+
+ ```bash
  [ 1 1 ] ^ n   =  [F(n+1)     F(n)]
  [ 1 0 ]          [F(n)       F(n-1)]
  ```
+
    * You can calculate the power of the above matrix in `O(log(n))` using divide and conquer
 
 _________________________________
 
 ## Sum of first `n` fibonacci numbers in `O(log(n))`
+
 * `Sum(first n fibonacci numbers) = f(n+2) - f(2)` assuming fibonacci series is like `1,1,2,3,5,8...`
+
 _________________________________
 
 ## Infix to Perfix conversion using Stack
+
 _________________________________
 
 ## Infix to Prefix conversion using recursion
+
 _________________________________
 
 ## Evaluation of Postfix
+
 _________________________________
 
 ## Evaluation of Prefix
+
 _________________________________
 
 ## Largest sum contiguous sub-array - Kadane's Algo
+
 * Space Complexity: `O(1)`
 * Time Complexity: `O(n)`
 * Edge cases:
@@ -864,8 +926,11 @@ public class LeetCode53 {
        return max;
    }
 ```
+
 _________________________________
+
 ## Finding a pair in array that sums to a given value
+
 * The following program returns the indices of elements whose sum is given target.
 
 ```java
@@ -910,9 +975,11 @@ public class LeetCode1 {
 
 }
 ```
+
 _________________________________
 
 ## Finding a Triplet in array that sums to a given value
+
 * [LeetCode15](https://leetcode.com/problems/3sum/).
 * Following the approach given [here](https://www.geeksforgeeks.org/count-triplets-with-sum-smaller-that-a-given-value/).
 
@@ -962,9 +1029,11 @@ public class LeetCode15_1 {
     }
 }
 ```
+
 _________________________________
 
 ## Finding a tuple of 4 elementes in array that sums to a given value
+
 * Time complexity - O(n^2)
 * Space complexity - O(n^2)
 * Make sure you return unique quadruples
@@ -1034,12 +1103,15 @@ public class LeetCode18 {
     }
 }
 ```
+
 _________________________________
 
 ## Convert Binary Tree into it's mirror
+
 _________________________________
 
 ## Check if a give Binary tree is mirror of itself
+
 * Simple Recursive solution
 * [LeetCode226](https://leetcode.com/problems/invert-binary-tree/)
 
@@ -1071,6 +1143,7 @@ public class LeetCode226 {
 
 }
 ```
+
 _________________________________
 
 ## Check if two trees are mirror of each other
@@ -1098,6 +1171,7 @@ public class LeetCode101 {
 _________________________________
 
 ## Lowest common ancestor in a BST
+
 * [LeetCode235](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/)
 * Time Complexity - `O(h)`, where `h` is height of the tree
 * The following program assumes that both the nodes `p` and `q` are present in tree. (so this method will never return `null`).
@@ -1123,9 +1197,11 @@ public class LeetCode235 {
     }
 }
 ```
+
 _________________________________
 
 ## Height of a Binary Tree
+
 * [LeetCode104](https://leetcode.com/problems/maximum-depth-of-binary-tree/)
 
 ```java
@@ -1137,8 +1213,11 @@ public class LeetCode104 {
     }
 }
 ```
+
 ## Tree-Traversals
+
 ### InOrder
+
 * Recursive and iterative (using stack)
 * [LeetCode94](https://leetcode.com/problems/binary-tree-inorder-traversal/)
 
@@ -1202,15 +1281,23 @@ public class LeetCode94 {
 ```
 
 ### PreOrder
+
 ### PostOrder
+
 ### Level Order Traversal
 
+
 ## Determine if 2 given trees are identical
+
 ## Count leaf nodes in a given Binary tree
+
 ## Size of a Binary Tree
+
 ## Children sum property
 
+
 ## Path sum in a tree
+
 * [LeetCode437](https://leetcode.com/problems/path-sum-iii/)
 * Time Complexity = `O(n^2)`
 
@@ -1239,6 +1326,7 @@ public class LeetCode437 {
 _________________________________
 
 ## Tower of Hanoi
+
 _________________________________
 
 ## Check whether a number is power of 2 or not using bitwise-operators
@@ -1254,9 +1342,11 @@ public class CheckPowerOf2 {
     }
 }
 ```
+
 _________________________________
 
 ## DP (Dynamic programming)
+
 * Dynamic Programming is a programming paradigm in  which we solve each subproblem exactly once and store the subsolutions in a table.
 * The next time when same subproblem needs to be solved, we simply lookup to the previously computed solution.
 * Memoization and DP are different
@@ -1267,9 +1357,11 @@ _________________________________
   * Optimal Sub-structure
 * **Overlapping sub-problems** - In divide and conquer subproblems don't overlap, but in DP same sub-problem needs to be solved again and again.
 * Shortest path in a graph exhibits optimal substructure property, but longest path in a graph don't exhibit this property.
+
 _________________________________
 
 ## LIS - Longest Increasing SubSequence (LIS) O(n^2) and O(n log(n))
+
 * Time Complexity = `O(n log(n))` and space complexity = `O(n)`
 
 ```java
@@ -1301,9 +1393,11 @@ public class LeetCode300 {
     }
 }
 ```
+
 _________________________________
 
 ## LCS - Longest common subsequence (LCS)
+
 * Given 2 strings `x` and `y` find the length of LCS.
 * Suppose `x=ABCDGH` and `y=AEDFHR`, then the LCS is `ADH`
 * Data-Structure for storing solution of subproblems: A 2-D matrix/table of size `(m+1)*(n+1)`, where `m` is the length of first string and `n` is the length of second string.
@@ -1346,13 +1440,17 @@ public class LCS {
     }
 }
 ```
+
 _________________________________
+
 ## Edit Distance
+
 * [LeetCode72](https://leetcode.com/problems/edit-distance/)
 * You can insert, remove or replace (all operations cost equal). 
 * You need to find the minimum cost of converting one string `x` to other string `y`.
 * Dynamic programming solution:
     * store subsolutions in a table of size `(m+1)*(n+1)` where `m` is size of `x` and `n` is size of `y`
+
     ```java
     public class EditDistance {
         public static void main(String[] args) {
@@ -1388,8 +1486,10 @@ _________________________________
     }
 
     ```
+
 * The time-complexity of above solution is `O(mn)` and space complexity is also `O(mn)`
 * You can reduce the space complexity to `O(min(m,n))` by using two different 1-D arrays.
+
     ```java
     class Solution {
     public int minDistance(String word1, String word2) {
@@ -1458,28 +1558,46 @@ public class LeetCode64 {
 
 }
 ```
+
 _________________________________
 ## Subset sum problem
+
 ## Knapsack Problem (With repetition, without repetition, fractional knapsack)
+
 ## Coin change problem
+
 ## Calculating binomial coefficient
+
 ## Matric Chain Multiplication
+
 ## Longest palindromic Subsequence
+
 ## Rod Cutting problem
+
 ## Maximum Sum Increasing Subsequence
+
 ## Longest Bitonic Sequence
+
 ## Floyd Warshall's Algo - All pair shortest path
+
 ## Catalan Number
+
 * Read [this](https://en.wikipedia.org/wiki/Catalan_number) article from wikipedia.
 
 _________________________________
 ## Generating 0 and 1 randomly with 75% and 25% probaility
+
 ## Adjacency matrix. Interpretation of A^n[i][j]
+
 ## Finding cycles in undirected graph
+
 ## Finding cycles in directed graph
+
 ## DFS - Longest path in a DAG
+
 [LeetCode329](https://leetcode.com/problems/longest-increasing-path-in-a-matrix/)
 (Read [this](http://www.mathcs.emory.edu/~cheung/Courses/171/Syllabus/11-Graph/Docs/longest-path-in-dag.pdf) link for a more clear and succinct explanation)
+
 ```java
 import java.util.*;
 
@@ -1546,6 +1664,7 @@ public class LeetCode329_1 {
 ```
 
 ## Disjoint Set (Union-find)
+
 * [LeetCode128](https://leetcode.com/problems/longest-consecutive-sequence/)
 * This is an important data-structure.
 * This data structure can also be used to **detect cycles in an undirected graph**. See [this](https://www.geeksforgeeks.org/union-find/) for details.
@@ -1622,8 +1741,10 @@ public class LeetCode128 {
 
 }
 ```
+
 _________________________________
 ## String pattern matching
+
 * Assume that `m` is size of patterh and `n` is size of text
 * Naive String matching algorithm takes `O(m*n)`
 * Rabin-Karp 
@@ -1749,6 +1870,7 @@ public class StringPatternMatch {
 _________________________________
 
 ## Search in a rotated sorted array
+
 * Be sure that you find the pivot in a correct way
 * Beware of the edge cases
     * When there is only one elemnt in the array
@@ -1821,9 +1943,11 @@ public class LeetCode33 {
 
 }
 ```
+
 _________________________________
 
 ## Find first and last position of an element in sorted array
+
 * simple binary search implementation
 * beware of the edge cases
 
@@ -1914,13 +2038,14 @@ public class LeetCode34 {
 
 _________________________________
 
-
 # Some tricky or tough problems
 
 ## Rotating 2-D square matrix
+
 * [Rotate Matrix on InterviewBit](https://www.interviewbit.com/problems/rotate-matrix/)
 * No extra memory should be used, and the algorithm should work in-place.
 * This is a simple problem but it can be tricky with thinking it for the first time.
+
 ```java
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -1986,10 +2111,11 @@ public class IB_RotateMatrix {
 
 }
 ```
+
 _________________________________
 
-
 ## Median of 2 sorted arrays
+
 * InterviewBit - [Median of Arrays](https://www.interviewbit.com/problems/median-of-array/)
 * Time Complexity = `O(log(min(m,n)))` where `m` and `n` are the size of arrays/lists
 
@@ -2077,7 +2203,9 @@ public class IB_MedianOf2Arrays {
 ```
 
 # Programming language utilities (Specifically for Java)
+
 ## Priority Queues
+
 * Construct PriorityQueue using `PriorityQueue<Person> personPriorityQueue = new PriorityQueue<>((p1, p2) -> p1.getName().compareTo(p2.getName()));`
 * This implementation provides `O(log(n))` time for the enqueuing and dequeuing methods (`offer`, `poll`, `remove` and `add`)
 * If the `PriorityQueue` is of type `Person` and `Person` implements `Comparable<Person>`, at the same time you have provided `Comparator<Person>` while constructing the queue, then the custom `Comparator` provided when constructing the queue will be given the preference over the `Comparable` that `Person` implements.
@@ -2136,8 +2264,10 @@ public class PriorityQueueExample {
     }
 }
 ```
+
 Output of the above code is:
-```
+
+```bash
 A, 5
 B, 4
 C, 3
@@ -2150,19 +2280,25 @@ C, 3
 B, 4
 A, 5
 ```
+
 _________________________________
+
 ## Binary search in Java
+
 * `Collections.binarySearch(sortedCollection, searchValue)`
 * `Collections.binarySearch(sortedCollection, searchValue, comparator)`
 * `Arrays.binarySearch` (TODO: you need to make one example)
 * Do [LeetCode300](https://leetcode.com/problems/longest-increasing-subsequence/).
 * What `Collections.binarySearch` returns? 
+
 > The index of the search key, if it is contained in the list; otherwise, (-(insertion point) - 1). The insertion point is defined as the point at which the key would be inserted into the list: the index of the first element greater than the key, or list.size() if all elements in the list are less than the specified key. Note that this guarantees that the return value will be >= 0 if and only if the key is found.
 
->  If the list contains multiple elements equal to the specified object, there is no guarantee which one will be found. 
+> If the list contains multiple elements equal to the specified object, there is no guarantee which one will be found. 
 
-* See how to properly apply `Collections.binarySearch` in 
+* See how to properly apply `Collections.binarySearch`.
+
 _________________________________
+
 ## Sort
 
 * `Collections.sort(list)` -> this is a stable sort. (Solve [Max Distance on InterviewBit](https://www.interviewbit.com/problems/max-distance/) to see how sorting makes problems easy.)
@@ -2177,6 +2313,7 @@ _________________________________
 
 * sorting `java.util.List`
     * Custom `Comparator` given in `Collections#sort` is given more preferenece over `Comparable` which the `Person` class implements.
+
     ```java
     import java.util.Arrays;
     import java.util.Collections;
@@ -2228,14 +2365,17 @@ _________________________________
         }
     }
     ```
+
     output:
-    ```
+
+    ```bash
     [C, 1][B, 2][A, 3]
     [A, 3][B, 2][C, 1]
     ```
 
 * sorting arrays
     * Custom `Comparator` given in `Arrays#sort` is given more preferenece over `Comparable` which the `Person` class implements.
+
     ```java
     import java.util.Arrays;
 
@@ -2286,26 +2426,41 @@ _________________________________
     }
 
     ```
+
     output:
-    ```
+
+    ```bash
     [C, 1][B, 2][A, 3]
     [A, 3][B, 2][C, 1]
     ```
+
 _________________________________
+
 ## floor/ceil operations in a  sorted data structure
+
 _________________________________
+
 ## Signed and unsigned bitwise operators
+
 _________________________________
+
 ## creating copy of a list
+
 _________________________________
+
 ## Map - `java.util.Map`
+
 * `TreeMap`
 * `HashMap`
 > All hash-based collections assume that an object’s hash value does not change while it is in use as a key in the collection.
 _________________________________
+
 ## Set - `java.util.Set`
+
 _________________________________
+
 ## BitSet - `java.util.BitSet` 
+
 * Constructors
     * `BitSet bitSet = new BitSet(1000);` - creates a `BitSet` with `1000` bits. All are set to `false` initially. (You can even do `bitSet.set(1100, true);` - the `BitSet` will expand automatically.)
 	* `BitSet bitSet = new BitSet();` - creates an empty `BitSet` with all bits `false` initially.
@@ -2316,7 +2471,9 @@ _________________________________
 	* `length()` - Returns the "logical size" of this BitSet: the index of the highest set bit in the BitSet plus one. Returns zero if the BitSet contains no set bits.
 	* `flip(int fromIndex, int toIndex)` Sets each bit from the specified fromIndex (inclusive) to the specified toIndex (exclusive) to the complement of its current value.
 _________________________________
+
 ## Stack In Java
+
 * Use `java.util.Deque` for Stack
 
     ```java
@@ -2326,9 +2483,13 @@ _________________________________
     stack.peek(); // peek on the top of the stack (without removing it)
     // stack.peek() is same as stack.peekFirst()
     ```
+
 _________________________________
+
 ## Queue In Java
+
 * Use `java.util.Deque` for Queues
+
     ```java
     Deque<Integer> queue = new ArrayDeque<>();
     queue.offer(10); // enqueues 10 in the queue at front
@@ -2336,4 +2497,5 @@ _________________________________
     queue.peek(); // peek in the front of the queue (without removing it)
     // queue.peek() is same as queue.peekFirst()
     ```
+
 _________________________________
