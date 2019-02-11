@@ -103,6 +103,9 @@
   * [Median of 2 sorted Arrays](#median-of-2-sorted-arrays)
   * [Largest rectangle in a Histogram](#largest-rectangle-in-a-histogram)
 * [Some simple problems but worth doing](#some-simple-problems-but-worth-doing)
+  * [2 Sum](#2-sum)
+  * [Closest 3 sum](#closest-3-sum)
+  * [4 Sum](#4-sum)
 * [Programming language utilities (Specifically for Java)](#programming-language-utilities-(specifically-for-java))
   * [Priority Queues](#priority-queues)
   * [Binary search in Java](#binary-search-in-java)
@@ -115,6 +118,7 @@
   * [BitSet - `java.util.BitSet`](#bitset---`java.util.bitset`)
   * [Stack In Java](#stack-in-java)
   * [Queue In Java](#queue-in-java)
+* [Questions that you need to ask](#questions-that-you-need-to-ask)
 
 # Data Structures
 
@@ -2353,6 +2357,62 @@ public class IB_2Sum {
 }
 ```
 
+## Closest 3 Sum
+
+```java
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+/**
+ * https://www.interviewbit.com/problems/3-sum/
+ * <p>
+ * Time complexity = O(n^2)
+ * Space complexity = O(1)
+ */
+public class IB_3Sum {
+    public static void main(String[] args) {
+        ArrayList<Integer> list = new ArrayList<>(Arrays.asList(-1, 2, 1, -4));
+        System.out.println(new IB_3Sum().threeSumClosest(list, 1)); // 2
+    }
+
+    public int threeSumClosest(ArrayList<Integer> A, int sum) {
+        if (A == null || A.size() < 3)
+            throw new IllegalArgumentException("the list either null or of size less than 3");
+
+        List<Integer> list = new ArrayList<>(A);
+        Collections.sort(list);
+        int answer = list.get(0) + list.get(1) + list.get(2);
+        for (int i = 0; i < list.size() - 1; i++) {
+            int cs = list.get(i) + findClosestSum(list, i + 1, list.size() - 1, sum - list.get(i));
+            if (Math.abs(cs - sum) < Math.abs(answer - sum))
+                answer = cs;
+        }
+        return answer;
+    }
+
+    // assuming that the list is sorted.
+    private int findClosestSum(List<Integer> list, int start, int end, int sum) {
+        int closest = list.get(start) + list.get(end);
+        for (int i = start, j = end; i < j; ) {
+            int cs = list.get(i) + list.get(j);
+            if (Math.abs(cs - sum) < Math.abs(closest - sum))
+                closest = cs;
+            if (cs < sum) {
+                i++;
+            } else if (cs > sum) {
+                j--;
+            } else if (cs == sum) {
+                return cs;
+            }
+        }
+        return closest;
+    }
+
+}
+```
+
 ## 4 Sum
 
 ```java
@@ -2751,3 +2811,16 @@ _________________________________
     ```
 
 _________________________________
+
+# Questions that you need to ask
+
+* Clarify the problem
+* propose a solution
+  * A brute force solution
+  * An optimized version 
+* State the time coomplexity and space complexity
+* What are your assumptions regarding the problem/input.
+* What if there are multiple solutions that exists
+  * should you return any solution?
+  * should you return a specific one?
+  * should you return all the solutions?
