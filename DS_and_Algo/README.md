@@ -184,12 +184,6 @@
 	* Separate chaining
 	* Open addressing
 
-## Graph
-
-* Tree (a connected graph with no cycles)
-	* Directed/undirected
-	* Weighted/unweighted
-
 ## Segment Tree
 
 * Lazy propogation in segment tree
@@ -200,7 +194,7 @@
 
 ## Trie
 
-* [LeetCode2018](https://leetcode.com/problems/implement-trie-prefix-tree/)
+* [LeetCode208](https://leetcode.com/problems/implement-trie-prefix-tree/)
 
 ## Splay Tree
 
@@ -232,17 +226,20 @@
 
 ## Graph
 
+* Tree (a connected graph with no cycles)
+  * Directed/undirected
+  * Weighted/unweighted
 * Basic Traversal - [LeetCode310](https://leetcode.com/problems/minimum-height-trees/)
 * BFS - [LeetCode200](https://leetcode.com/problems/number-of-islands/)
 * DFS - [LeetCode200](https://leetcode.com/problems/number-of-islands/)
-	* Topological sorting - [LeetCode210](https://leetcode.com/problems/course-schedule-ii/)
-	* Strongly connected components
-	* Detecting cycles in a undirected/directed graph - [LeetCode210](https://leetcode.com/problems/course-schedule-ii/)
-    * Longest path in a DAG [LeetCode329](https://leetcode.com/problems/longest-increasing-path-in-a-matrix/) (Read [this](http://www.mathcs.emory.edu/~cheung/Courses/171/Syllabus/11-Graph/Docs/longest-path-in-dag.pdf) link for a more clear and succinct explanation)
+  * Topological sorting - [LeetCode210](https://leetcode.com/problems/course-schedule-ii/)
+  * Strongly connected components
+  * Detecting cycles in a undirected/directed graph - [LeetCode210](https://leetcode.com/problems/course-schedule-ii/)
+  * Longest path in a DAG [LeetCode329](https://leetcode.com/problems/longest-increasing-path-in-a-matrix/) (Read [this](http://www.mathcs.emory.edu/~cheung/Courses/171/Syllabus/11-Graph/Docs/longest-path-in-dag.pdf) link for a more clear and succinct explanation)
 * Detecting cycles in an undirected graph
-    * Disjoint set data-structure - (union-find)
+  * Disjoint set data-structure - (union-find)
 * Detecting cycles in a directed graph
-    * Simple DFS and while doing DFS if you get a "back-edge" (an edge from curent vertex to a partially visited vertex) then the graph contains cycles.
+  * Simple DFS and while doing DFS if you get a "back-edge" (an edge from curent vertex to a partially visited vertex) then the graph contains cycles.
 
 # Problem Solving
 
@@ -1344,7 +1341,7 @@ public class CheckPowerOf2 {
         System.out.println(new CheckPowerOf2().isPowerOf2(1024));
     }
     public boolean isPowerOf2(long n) {
-        return (n & (n-1)) == 0;
+        return (n>=0) && ((n & (n-1)) == 0);
     }
 }
 ```
@@ -1376,11 +1373,10 @@ import java.util.*;
 public class LeetCode300 {
     public static void main(String[] args) {
         System.out.println(new LeetCode300().lengthOfLIS(new int[]{10, 9, 2, 5, 3, 7, 101, 18}));
-
     }
 
     public int lengthOfLIS(int[] arr) {
-        // this list always be sorted
+        // this list is always sorted (this invariant is maintained)
         List<Integer> list = new ArrayList<>();
 
         for (int i = 0; i < arr.length; i++) {
@@ -1430,7 +1426,7 @@ public class LCS {
         int[][] dp = new int[m + 1][n + 1];
         for (int i = 0; i <= m; i++)
             dp[i][0] = 0;
-        for (int j = 0; j < n; j++)
+        for (int j = 0; j <= n; j++)
             dp[0][j] = 0;
         for (int i = 1; i <= m; i++) {
             for (int j = 1; j <= n; j++) {
@@ -1670,6 +1666,90 @@ public class LeetCode329_1 {
 ```
 
 ## Disjoint Set (Union-find)
+
+* InterviewBit [Commutable-Islands](https://www.interviewbit.com/problems/commutable-islands/)
+
+```java
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+public class IB_CommutableIslands {
+    public static void main(String[] args) {
+        ArrayList<ArrayList<Integer>> list = new ArrayList<>();
+        list.add(new ArrayList<>(Arrays.asList(1, 2, 15)));
+        list.add(new ArrayList<>(Arrays.asList(3, 2, 14)));
+        list.add(new ArrayList<>(Arrays.asList(4, 3, 7)));
+        list.add(new ArrayList<>(Arrays.asList(2, 5, 10)));
+        list.add(new ArrayList<>(Arrays.asList(5, 4, 6)));
+        list.add(new ArrayList<>(Arrays.asList(5, 1, 7)));
+
+        System.out.println(new IB_CommutableIslands().solve(5, list));
+    }
+
+    public int solve(int A, ArrayList<ArrayList<Integer>> list) {
+        List<Edge> edges = new ArrayList<>(list.size());
+        for (int i = 0; i < list.size(); i++) {
+            assert list.get(i).size() == 3;
+            edges.add(new Edge(list.get(i).get(0) - 1,
+                    list.get(i).get(1) - 1,
+                    list.get(i).get(2)));
+        }
+        Collections.sort(edges, (x, y) -> Integer.compare(x.w, y.w));
+
+        int[] parent = new int[A];
+        int[] size = new int[A];
+        for (int i = 0; i < parent.length; i++) {
+            parent[i] = i;
+            size[i] = 1;
+        }
+
+        int answer = 0;
+        for (int i = 0; i < edges.size(); i++) {
+            Edge ce = edges.get(i);
+            if (find(parent, ce.a) == find(parent, ce.b)) {
+                continue;
+            }
+            answer += ce.w;
+            merge(parent, size, ce.a, ce.b);
+        }
+        return answer;
+    }
+
+    // gives the representative element of 'a'
+    private int find(int[] parent, int a) {
+        if (parent[a] == a)
+            return a;
+        return parent[a] = find(parent, parent[a]); // path compression
+    }
+
+    private void merge(int[] parent, int[] size, int a, int b) {
+        int ra = find(parent, a);
+        int rb = find(parent, b);
+        if (ra != rb) {
+            if (size[ra] > size[rb]) {
+                parent[rb] = ra;
+                size[ra] += size[rb];
+            } else {
+                parent[ra] = rb;
+                size[rb] += size[ra];
+            }
+        }
+    }
+
+    private static class Edge {
+        int a, b, w;
+
+        public Edge(int a, int b, int w) {
+            this.a = a;
+            this.b = b;
+            this.w = w;
+        }
+    }
+
+}
+```
 
 * [LeetCode128](https://leetcode.com/problems/longest-consecutive-sequence/)
 * This is an important data-structure.
@@ -2276,6 +2356,298 @@ public class IB_LargestRecInHistogram {
 }
 ```
 
+## Maximum Width of binary tree
+
+If you are allowed to modify the index of the `TreeNode` (The following code cannot be submitted on LeetCode)
+
+```java
+/*
+        Question :
+        Given a binary tree, write a function to get the row with maximum width in the tree.
+        The width of one row is defined as the length between the end-nodes
+        (the leftmost and right most non-null nodes in the level,
+        where the null nodes between the end-nodes are also counted into the length calculation.)
+               1	    		   0
+           2      3	           1		2
+        4   .  6   	.        3	 .    5	  .
+
+        5-3+1 = 3
+*/
+
+import java.util.ArrayDeque;
+import java.util.Deque;
+
+public class LeetCode662Alternative {
+    public static void main(String[] args) {
+        test1(); // 2
+        test2(); // 4
+        test3(); // 3
+        test4(); // 1
+    }
+
+    private static void test1() {
+        /*
+                1
+              2   3
+              answer should be 2
+         */
+        TreeNode root = new TreeNode(1);
+        root.left = new TreeNode(2);
+        root.right = new TreeNode(3);
+
+        System.out.println(new LeetCode662Alternative().getMaxWidth(root));
+    }
+
+    private static void test2() {
+        /*
+                    1
+                 2       3
+             4     .  .      5
+             answer should be 4
+         */
+        TreeNode root = new TreeNode(1);
+        root.left = new TreeNode(2);
+        root.right = new TreeNode(3);
+        root.left.left = new TreeNode(4);
+        root.right.right = new TreeNode(5);
+
+        System.out.println(new LeetCode662Alternative().getMaxWidth(root));
+    }
+
+    private static void test3() {
+        /*
+                     1
+                2         3
+             .     4    .    5
+             answer should be 3
+         */
+        TreeNode root = new TreeNode(1);
+        root.left = new TreeNode(2);
+        root.right = new TreeNode(3);
+        root.left.right = new TreeNode(4);
+        root.right.right = new TreeNode(5);
+
+        System.out.println(new LeetCode662Alternative().getMaxWidth(root));
+    }
+    private static void test4() {
+        /*
+                           1
+                     .            2
+                 .      .     .       3
+                . .    . .   . .     .  4
+             answer should be 1
+         */
+        TreeNode root = new TreeNode(1);
+        root.left = new TreeNode(2);
+        root.left.left = new TreeNode(3);
+        root.left.left.left = new TreeNode(4);
+
+        System.out.println(new LeetCode662Alternative().getMaxWidth(root));
+    }
+
+
+    // root
+    public int getMaxWidth(TreeNode node) {
+        if (node == null)
+            return 0;
+        Deque<TreeNode> q = new ArrayDeque<>();
+        node.index = 0;
+        q.offer(node);
+        int leftMin = Integer.MAX_VALUE, rightMax = Integer.MIN_VALUE;
+        int answer = 1;
+        int ncl = 1, nextLevel = 0;
+        while (q.size() != 0) {
+            TreeNode cn = q.poll();
+            ncl--;
+
+            if (cn.left != null) {
+                q.offer(cn.left);
+                leftMin = Math.min(leftMin, cn.index * 2 + 1);
+                rightMax = Math.max(rightMax, cn.index * 2 + 1);
+                cn.left.index = cn.index * 2 + 1;
+                nextLevel++;
+            }
+            if (cn.right != null) {
+                q.offer(cn.right);
+                leftMin = Math.min(leftMin, cn.index * 2 + 2);
+                rightMax = Math.max(rightMax, cn.index * 2 + 2);
+                cn.right.index = cn.index * 2 + 2;
+                nextLevel++;
+            }
+            if (ncl == 0) {
+                ncl = nextLevel;
+                nextLevel = 0;
+                if (leftMin != Integer.MAX_VALUE && rightMax != Integer.MIN_VALUE) {
+                    if (rightMax - leftMin + 1 > answer)
+                        answer = rightMax - leftMin + 1;
+                    leftMin = Integer.MAX_VALUE;
+                    rightMax = Integer.MIN_VALUE;
+                }
+            }
+        }
+        return answer;
+    }
+
+    static class TreeNode {
+        int val;
+        TreeNode left, right;
+        int index;
+
+        public TreeNode(int val) {
+            this.val = val;
+        }
+    }
+}
+```
+
+If you are not allowed to modify the index of the `TreeNode` (The following code can be submitted on LeetCode)
+
+```java
+// without changing the node structure
+/*
+        Question :
+        Given a binary tree, write a function to get the row with maximum width in the tree.
+        The width of one row is defined as the length between the end-nodes
+        (the leftmost and right most non-null nodes in the level,
+        where the null nodes between the end-nodes are also counted into the length calculation.)
+               1	    		   0
+           2      3	           1		2
+        4   .  6   	.        3	 .    5	  .
+
+        5-3+1 = 3
+*/
+
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.HashMap;
+import java.util.Map;
+
+public class LeetCode662 {
+    public static void main(String[] args) {
+        test1(); // 2
+        test2(); // 4
+        test3(); // 3
+        test4(); // 1
+    }
+
+    private static void test1() {
+        /*
+                1
+              2   3
+              answer should be 2
+         */
+        TreeNode root = new TreeNode(1);
+        root.left = new TreeNode(2);
+        root.right = new TreeNode(3);
+
+        System.out.println(new LeetCode662().widthOfBinaryTree(root));
+    }
+
+    private static void test2() {
+        /*
+                    1
+                 2       3
+             4     .  .      5
+             answer should be 4
+         */
+        TreeNode root = new TreeNode(1);
+        root.left = new TreeNode(2);
+        root.right = new TreeNode(3);
+        root.left.left = new TreeNode(4);
+        root.right.right = new TreeNode(5);
+
+        System.out.println(new LeetCode662().widthOfBinaryTree(root));
+    }
+
+    private static void test3() {
+        /*
+                     1
+                2         3
+             .     4    .    5
+             answer should be 3
+         */
+        TreeNode root = new TreeNode(1);
+        root.left = new TreeNode(2);
+        root.right = new TreeNode(3);
+        root.left.right = new TreeNode(4);
+        root.right.right = new TreeNode(5);
+
+        System.out.println(new LeetCode662().widthOfBinaryTree(root));
+    }
+
+    private static void test4() {
+        /*
+                           1
+                     .            2
+                 .      .     .       3
+                . .    . .   . .     .  4
+             answer should be 1
+         */
+        TreeNode root = new TreeNode(1);
+        root.left = new TreeNode(2);
+        root.left.left = new TreeNode(3);
+        root.left.left.left = new TreeNode(4);
+
+        System.out.println(new LeetCode662().widthOfBinaryTree(root));
+    }
+
+
+    // root
+    public int widthOfBinaryTree(TreeNode node) {
+        if (node == null)
+            return 0;
+        Deque<TreeNode> q = new ArrayDeque<>();
+        q.offer(node);
+        int leftMin = Integer.MAX_VALUE, rightMax = Integer.MIN_VALUE;
+        int answer = 1;
+        int ncl = 1, nextLevel = 0;
+        // for keeping index, as treenode won't have hashCode() defined,
+        // so the hashCode is assumed to be distince for different nodes
+        Map<TreeNode, Integer> indexMap = new HashMap<>();
+        indexMap.put(node, 0);
+        while (q.size() != 0) {
+            TreeNode cn = q.poll();
+            ncl--;
+
+            if (cn.left != null) {
+                q.offer(cn.left);
+                leftMin = Math.min(leftMin, indexMap.get(cn) * 2 + 1);
+                rightMax = Math.max(rightMax, indexMap.get(cn) * 2 + 1);
+                indexMap.put(cn.left, indexMap.get(cn) * 2 + 1);
+                nextLevel++;
+            }
+            if (cn.right != null) {
+                q.offer(cn.right);
+                leftMin = Math.min(leftMin, indexMap.get(cn) * 2 + 2);
+                rightMax = Math.max(rightMax, indexMap.get(cn) * 2 + 2);
+                indexMap.put(cn.right, indexMap.get(cn) * 2 + 2);
+                nextLevel++;
+            }
+            if (ncl == 0) {
+                ncl = nextLevel;
+                nextLevel = 0;
+                if (leftMin != Integer.MAX_VALUE && rightMax != Integer.MIN_VALUE) {
+                    if (rightMax - leftMin + 1 > answer)
+                        answer = rightMax - leftMin + 1;
+                    leftMin = Integer.MAX_VALUE;
+                    rightMax = Integer.MIN_VALUE;
+                }
+            }
+        }
+        return answer;
+    }
+
+    static class TreeNode {
+        int val;
+        TreeNode left, right;
+
+        public TreeNode(int val) {
+            this.val = val;
+        }
+    }
+}
+```
+
 # Some simple problems but worth doing
 
 ## 2 Sum
@@ -2620,7 +2992,8 @@ _________________________________
         List<Integer> list = Arrays.asList(new Integer[]{200, Integer.MIN_VALUE});
         Comparator<Integer> cmp1 = (a, b) -> b - a; // this is not correct
         Comparator<Integer> cmp2 = (a, b) -> -a.compareTo(b); // this is correct
-        Comparator<Integer> cmp3 = (a, b) -> b.compareTo(a); // this is correct and is same as cmp1
+        Comparator<Integer> cmp3 = (a, b) -> b.compareTo(a); // this is correct and is same as cmp2
+        Comparator<Integer> cmp3 = (a, b) -> Integer.compare(b, a); // this is correct and is same as cmp2
         ```
 
 * sorting `java.util.List`
@@ -2686,7 +3059,8 @@ _________________________________
     ```
 
 * sorting arrays
-    * Custom `Comparator` given in `Arrays#sort` is given more preferenece over `Comparable` which the `Person` class implements.
+  * Custom `Comparator` given in `Arrays#sort` is given more preferenece over `Comparable` which the `Person` class implements.
+  * Sorting an array with custome comparator seems to be not possible in java. See [this](https://stackoverflow.com/questions/3699141/how-to-sort-an-array-of-ints-using-a-custom-comparator). 
 
     ```java
     import java.util.Arrays;
@@ -2815,11 +3189,12 @@ _________________________________
 # Questions that you need to ask
 
 * Clarify the problem
+* What are your assumptions regarding the problem/input.
+  * Ask interviewer if he/she is fine with these assumptions
 * propose a solution
   * A brute force solution
-  * An optimized version 
-* State the time coomplexity and space complexity
-* What are your assumptions regarding the problem/input.
+  * An optimized version
+* State the time complexity and space complexity
 * What if there are multiple solutions that exists
   * should you return any solution?
   * should you return a specific one?
