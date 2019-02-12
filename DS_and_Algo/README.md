@@ -106,6 +106,9 @@
   * [2 Sum](#2-sum)
   * [Closest 3 sum](#closest-3-sum)
   * [4 Sum](#4-sum)
+* [GeeksForGeeks](#geeksforgeeks)
+* [System Design](#system-design)
+  * [Fuzzy String matching](#fuzzy-string-matching)
 * [Programming language utilities (Specifically for Java)](#programming-language-utilities-(specifically-for-java))
   * [Priority Queues](#priority-queues)
   * [Binary search in Java](#binary-search-in-java)
@@ -1447,6 +1450,8 @@ _________________________________
 
 ## Edit Distance
 
+* [Levenshtein Distance](https://en.wikipedia.org/wiki/Levenshtein_distance)
+* Also read [this](https://www.datacamp.com/community/tutorials/fuzzy-string-python) for a more broader view.
 * [LeetCode72](https://leetcode.com/problems/edit-distance/)
 * You can insert, remove or replace (all operations cost equal). 
 * You need to find the minimum cost of converting one string `x` to other string `y`.
@@ -2429,6 +2434,7 @@ public class LeetCode662Alternative {
 
         System.out.println(new LeetCode662Alternative().getMaxWidth(root));
     }
+
     private static void test4() {
         /*
                            1
@@ -2447,41 +2453,43 @@ public class LeetCode662Alternative {
 
 
     // root
-    public int getMaxWidth(TreeNode node) {
-        if (node == null)
+    public int getMaxWidth(TreeNode root) {
+        if (root == null)
             return 0;
-        Deque<TreeNode> q = new ArrayDeque<>();
-        node.index = 0;
-        q.offer(node);
-        int leftMin = Integer.MAX_VALUE, rightMax = Integer.MIN_VALUE;
+        Deque<TreeNode> queue = new ArrayDeque<>();
+        // root.index = 0; // is already 0, you don't need to explicitly do this
+        queue.offer(root);
+        int minCL = Integer.MAX_VALUE; // min of current level
+        int maxCL = Integer.MIN_VALUE; // max of current level
         int answer = 1;
-        int ncl = 1, nextLevel = 0;
-        while (q.size() != 0) {
-            TreeNode cn = q.poll();
+        int ncl = 1; // nodes in current level
+        int nnl = 0; // nodes in next level
+        while (queue.size() != 0) {
+            TreeNode cn = queue.poll(); // current node
             ncl--;
 
             if (cn.left != null) {
-                q.offer(cn.left);
-                leftMin = Math.min(leftMin, cn.index * 2 + 1);
-                rightMax = Math.max(rightMax, cn.index * 2 + 1);
+                queue.offer(cn.left);
+                minCL = Math.min(minCL, cn.index * 2 + 1);
+                maxCL = Math.max(maxCL, cn.index * 2 + 1);
                 cn.left.index = cn.index * 2 + 1;
-                nextLevel++;
+                nnl++;
             }
             if (cn.right != null) {
-                q.offer(cn.right);
-                leftMin = Math.min(leftMin, cn.index * 2 + 2);
-                rightMax = Math.max(rightMax, cn.index * 2 + 2);
+                queue.offer(cn.right);
+                minCL = Math.min(minCL, cn.index * 2 + 2);
+                maxCL = Math.max(maxCL, cn.index * 2 + 2);
                 cn.right.index = cn.index * 2 + 2;
-                nextLevel++;
+                nnl++;
             }
             if (ncl == 0) {
-                ncl = nextLevel;
-                nextLevel = 0;
-                if (leftMin != Integer.MAX_VALUE && rightMax != Integer.MIN_VALUE) {
-                    if (rightMax - leftMin + 1 > answer)
-                        answer = rightMax - leftMin + 1;
-                    leftMin = Integer.MAX_VALUE;
-                    rightMax = Integer.MIN_VALUE;
+                ncl = nnl;
+                nnl = 0;
+                if (minCL != Integer.MAX_VALUE && maxCL != Integer.MIN_VALUE) {
+                    if (maxCL - minCL + 1 > answer)
+                        answer = maxCL - minCL + 1;
+                    minCL = Integer.MAX_VALUE;
+                    maxCL = Integer.MIN_VALUE;
                 }
             }
         }
@@ -2593,44 +2601,51 @@ public class LeetCode662 {
 
 
     // root
-    public int widthOfBinaryTree(TreeNode node) {
-        if (node == null)
+    public int widthOfBinaryTree(TreeNode root) {
+        if (root == null)
             return 0;
-        Deque<TreeNode> q = new ArrayDeque<>();
-        q.offer(node);
-        int leftMin = Integer.MAX_VALUE, rightMax = Integer.MIN_VALUE;
+        Deque<TreeNode> queue = new ArrayDeque<>();
+        queue.offer(root);
+        int minCL = Integer.MAX_VALUE; // min for the current level
+        int maxCL = Integer.MIN_VALUE; // max for the next level
         int answer = 1;
-        int ncl = 1, nextLevel = 0;
-        // for keeping index, as treenode won't have hashCode() defined,
-        // so the hashCode is assumed to be distince for different nodes
+        int ncl = 1; // nodes in the current level
+        int nnl = 0; // nodes in the next level
+        /*
+             for keeping index, as treenode won't have hashCode() defined,
+             so the hashCode is assumed to be distince for different nodes
+             depending on Object.hashCode() -> this can be particularly bad
+             this solution will go wrong if already the hashCode is overriden
+             in TreeNode and multiple TreeNodes can have same hash.
+        */
         Map<TreeNode, Integer> indexMap = new HashMap<>();
-        indexMap.put(node, 0);
-        while (q.size() != 0) {
-            TreeNode cn = q.poll();
+        indexMap.put(root, 0);
+        while (queue.size() != 0) {
+            TreeNode cn = queue.poll(); // current node
             ncl--;
 
             if (cn.left != null) {
-                q.offer(cn.left);
-                leftMin = Math.min(leftMin, indexMap.get(cn) * 2 + 1);
-                rightMax = Math.max(rightMax, indexMap.get(cn) * 2 + 1);
+                queue.offer(cn.left);
+                minCL = Math.min(minCL, indexMap.get(cn) * 2 + 1);
+                maxCL = Math.max(maxCL, indexMap.get(cn) * 2 + 1);
                 indexMap.put(cn.left, indexMap.get(cn) * 2 + 1);
-                nextLevel++;
+                nnl++;
             }
             if (cn.right != null) {
-                q.offer(cn.right);
-                leftMin = Math.min(leftMin, indexMap.get(cn) * 2 + 2);
-                rightMax = Math.max(rightMax, indexMap.get(cn) * 2 + 2);
+                queue.offer(cn.right);
+                minCL = Math.min(minCL, indexMap.get(cn) * 2 + 2);
+                maxCL = Math.max(maxCL, indexMap.get(cn) * 2 + 2);
                 indexMap.put(cn.right, indexMap.get(cn) * 2 + 2);
-                nextLevel++;
+                nnl++;
             }
             if (ncl == 0) {
-                ncl = nextLevel;
-                nextLevel = 0;
-                if (leftMin != Integer.MAX_VALUE && rightMax != Integer.MIN_VALUE) {
-                    if (rightMax - leftMin + 1 > answer)
-                        answer = rightMax - leftMin + 1;
-                    leftMin = Integer.MAX_VALUE;
-                    rightMax = Integer.MIN_VALUE;
+                ncl = nnl;
+                nnl = 0;
+                if (minCL != Integer.MAX_VALUE && maxCL != Integer.MIN_VALUE) {
+                    if (maxCL - minCL + 1 > answer)
+                        answer = maxCL - minCL + 1;
+                    minCL = Integer.MAX_VALUE;
+                    maxCL = Integer.MIN_VALUE;
                 }
             }
         }
@@ -2885,6 +2900,31 @@ public class IB_4Sum {
 }
 ```
 
+# GeeksForGeeks
+
+* [Maximum sum in circular array such that no two elements are adjacent](https://www.geeksforgeeks.org/maximum-sum-in-circular-array-such-that-no-two-elements-are-adjacent/)
+
+# System design
+
+## Fuzzy string matching
+
+* These ideas were taken from [here](https://www.datacamp.com/community/tutorials/fuzzy-string-python)
+* Assuming that you have 2 strings of length `m` and `n`
+* Go for edit distance ([Levenshtein Distance](#edit-distance))
+* Define similarity index `(m+n-editDistance) / (m+n)`
+  * define a threshold for the similarity index
+* do some preprocessing on the string
+  * like both the strings should be converted to lower-case before calculating the edit distance. (`String#toLowerCase()`)
+* Try giving different weights to insertion, deletion and substitution
+  * You should take care of situations when 2 alphabets are shuffled.
+  * should you consider out of order mismatches and give them lesser weight
+* What if a punctuation character is missing? Shouldn't you consider giving less weight to it rather than giving it same weight as for an ordinary alphabet-miss?
+* What if one string is substring of other.
+* What if the tokens are in different order?
+  * do you want to consider `Hello World` and `World Hello` same?
+  * sorting the tokens
+  * removing punctuation characters
+
 # Programming language utilities (Specifically for Java)
 
 ## Priority Queues
@@ -3060,7 +3100,7 @@ _________________________________
 
 * sorting arrays
   * Custom `Comparator` given in `Arrays#sort` is given more preferenece over `Comparable` which the `Person` class implements.
-  * Sorting an array with custome comparator seems to be not possible in java. See [this](https://stackoverflow.com/questions/3699141/how-to-sort-an-array-of-ints-using-a-custom-comparator). 
+  * Sorting an array with custom comparator seems to be not possible in java. See [this](https://stackoverflow.com/questions/3699141/how-to-sort-an-array-of-ints-using-a-custom-comparator). 
 
     ```java
     import java.util.Arrays;
