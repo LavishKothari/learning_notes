@@ -8,7 +8,11 @@ URL: https://www.youtube.com/watch?v=1OpAgZvYXLQ&t
 * [How it fits into the Java Philosophy](#how-it-fits-into-the-java-philosophy)
 * [What are Lambda expressions under the hood](#what-are-lambda-expressions-under-the-hood)
 * [How this is going to change the way you code](#how-this-is-going-to-change-the-way-you-code)
-
+* [A peek at method references](#a-peek-at-method-references)
+  * [Same syntax for static method reference and instance method reference](#same-syntax-for-static-method-reference-and-instance-method-reference)
+  * [Method references with 2 parameters](#method-references-with-2-parameters)
+  * [Limitations of method references](#limitations-of-method-references)
+* [Function composition](#function-composition)
 ## What is a Lambda Expression
 
 The following is a very noisy code:
@@ -200,6 +204,10 @@ You are receiving an argument as paramter, and you don't want to alter the arg, 
 
 `System.out` is an object. And `println` is not a static method, rather it's an instance method.
 
+* parameter as an argument
+* parameter as an argument to a static method
+* parameter as a target
+
 ```java
 package devoxx.java8.example;
 
@@ -212,8 +220,133 @@ public class Sample {
 
         List<Integer> nums = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
         nums.stream()
-                .map(String::valueOf) // passing to static method
-                .forEach(System.out::println); // passing to instance method
+                .map(String::valueOf) // reference to a static method
+                .forEach(System.out::println); // reference to an instance method
+    }
+}
+```
+
+### Same syntax for static method reference and instance method reference
+
+```java
+package devoxx.java8.example;
+
+import java.util.Arrays;
+import java.util.List;
+
+public class Sample {
+    public static void main(String[] args) throws InterruptedException {
+
+        List<Integer> nums = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+
+        nums.stream()
+                .map(String::valueOf) // calling a static method
+                .forEach(System.out::println);
+
+        nums.stream()
+                .map(e -> String.valueOf(e))
+                .map(String::toString) // calling an instance method
+                .forEach(System.out::println);
+
+        /*
+         * in the above 2 examples the syntax for calling static method
+         * and instance method looks same
+         *
+         * So you will have to figure out that String::valueOf is static
+         * and String::toString is instance method.
+         *
+         * But the beauty here is that both of them works seamlessly with
+         * same syntax.
+         */
+    }
+}
+```
+
+### Method references with 2 parameters
+
+```java
+package devoxx.java8.example;
+
+import java.util.Arrays;
+import java.util.List;
+
+public class Sample {
+    public static void main(String[] args) throws InterruptedException {
+
+        List<Integer> nums = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+
+        // prints 55
+        System.out.println(nums.stream()
+                .reduce(0, (total, e) -> Integer.sum(total, e)));
+
+        // prints 55
+        System.out.println(nums.stream()
+                .reduce(0, Integer::sum)); // both the elements are argument to Integer.sum
+        // this is equivalent to calling Integer.sum(total, e)
+
+        // prints 12345678910
+        System.out.println(nums.stream()
+                .map(String::valueOf)
+                .reduce("", (result, e) -> result.concat(e))); // concatenating in ascending order
+        // in this case one is target and one is argument
+
+        // prints 12345678910
+        System.out.println(nums.stream()
+                .map(String::valueOf)
+                .reduce("", String::concat));
+        // same syntax as Integer::sum
+        // (note that Integer.sum is static method ad String::concat is instance method)
+        // still you are having the same syntax.
+
+        // prints 10987654321
+        System.out.println(nums.stream()
+                .map(String::valueOf)
+                .reduce("", (result, e) -> e.concat(result))); // concatenating in descending order
+    }
+}
+```
+
+CAUTION: the parameter order is important. (for sum it is not making any difference but for other methods it can give you worng results if the order is changed)
+
+### Limitations of method references
+
+* You cannot use them if you are doing any manipulation of the data
+* You cannot use them if there is a conflict between instance method and static method (Example `Integer.toString()` is instance method and `Integer.toString(int)` is a static method - the compiler can't decide what to do here and gives you an error.)
+
+## Function Composition
+
+```java
+package devoxx.java8.example;
+
+import java.util.Arrays;
+import java.util.List;
+
+public class Sample {
+    public static void main(String[] args) throws InterruptedException {
+        List<Integer> nums = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+
+        // Given numbers, double the even numbers and total them
+
+        // imperative style code
+        int result = 0;
+        for (int e : nums) {
+            if (e % 2 == 0)
+                result += 2 * e;
+        }
+        System.out.println(result);
+
+        // functional style code
+        System.out.println(nums.stream()
+                .filter(e -> e % 2 == 0)
+                .map(e -> e * 2)
+                .reduce(0, Integer::sum));
+
+        // functional style code
+        // the code is more expressive
+        System.out.println(nums.stream()
+                .filter(e -> e % 2 == 0)
+                .mapToInt(e -> e * 2)
+                .sum());
     }
 }
 ```
