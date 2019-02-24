@@ -13,6 +13,13 @@ URL: https://www.youtube.com/watch?v=1OpAgZvYXLQ&t
   * [Method references with 2 parameters](#method-references-with-2-parameters)
   * [Limitations of method references](#limitations-of-method-references)
 * [Function composition](#function-composition)
+* [Parallel Stream](#parallel-stream)
+* [Caution points with parallel streams](#caution-points-with-parallel-streams)
+* [Operations on stream](#operations-on-stream)
+  * [filter](#filter)
+  * [map](#map)
+  * [reduce](#reduce)
+
 ## What is a Lambda Expression
 
 The following is a very noisy code:
@@ -350,3 +357,123 @@ public class Sample {
     }
 }
 ```
+
+## Parallel Stream
+
+```java
+package devoxx.java8.example;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.Callable;
+
+public class Sample {
+    public static void main(String[] args) throws Exception {
+        List<Integer> nums = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+
+        // Given numbers, double the even numbers and total them
+
+        Callable<Integer> runner = () ->
+                nums.parallelStream()
+                        .filter(e -> e % 2 == 0)
+                        .mapToInt(Sample::compute)
+                        .sum();
+        System.out.println("execution time = " + TimeIt.timeIt(runner));
+    }
+
+    private static int compute(int x) {
+        try {
+            Thread.sleep(1000);
+        } catch (Exception e) {
+        }
+        return x * 2;
+    }
+
+    /**
+     * A simple class that allows you to calculate execution time in milli-seconds
+     */
+    private static class TimeIt {
+        private TimeIt() {
+        }
+
+        public static <T> double timeIt(Callable<T> callable) throws Exception {
+            long start = System.nanoTime();
+            System.out.println("result = " + callable.call());
+            return (System.nanoTime() - start) / 1.0e6;
+        }
+    }
+}
+```
+
+Output:
+
+```bash
+result = 60
+execution time = 1014.36792
+```
+
+With parallel streams, the execution time is only approximately 1 second. But with non-parallel streams the execution time will go up to 5 seconds.
+
+### Caution points with parallel streams
+
+* Just because you have parallel streams, you should not use it every-where. (Be extremely careful when using it.)
+* A parallel stream simply says that I don't mind using many threads and so I will use them.
+* A very good example: Say you lost your mobile phone in a room and the room has `n` persons in it.
+  * To find the phone, I can go sequentially to every person and ask him/her to find the mobile.
+  * Or I can parallely ask every person in the room to find my phone parallely.
+* If during the search the phone was found by the 5th person, then
+  * Sequential search will give me result in 5 time-units, where 1 time unit is the time spent by one person
+  * Parallel execution will give me the result in 1 time-unit.
+* But keep in mind that the parallel execution is employing much greater amount of resources.
+
+When you should use parallel streams:
+
+* When the task at hand is parallelizable
+* When you are willing to spend more resources
+* When the data-set on which you are parallelizing is big enough, so that you get benefit in performance
+* When the computation that you are having is big enough, so that you get benefit in performance
+
+## Stream as Abstraction
+
+A stream is not a physical object with data. A set is a data, collection is a data. But stream is not data. A stream is a bunch of functions that you will evaluate eventually. So there is no data sitting in stream. 
+
+It is a non-mutating pipeline. Function composition is a pipeling, you are transforming the data in the pipeline but you are not mutating the data.
+
+**Shared-mutability** - streams don't mutate data, rather they transform your data and returns the transformed data.
+
+## Operations on Stream
+
+### filter
+
+* Blocks some data and lets some data pass through.
+* number of ouptput: `0 <= number of elemnts in the output <= number of elemnts in the input`
+* intput: `Stream<T>` filter takes `Predicate<T>`
+* **Stay within it's swimlane**
+
+### map
+
+* transforms values of input stream into output stream
+* number of output is equal to the number of input
+* no gurantee on the type of output with respect to the type of input
+* Parameter: `Stream<T>` map takes `Function<T, R>` and returns a `Stream<R>`
+* **Stay within it's swimlane**
+
+### reduce
+
+* **cuts across the swimlanes**
+* reduce takes an initial value
+* reduce on `Stream<T>` takes 2 parameters. The first parameter is of type `T` and the second parameter is a `BiFunction<T, R>`. It returns a `Stream<R>`.
+
+What are swimlanes?
+
+|  | filter | map | reduce |
+|:----:|:----:|:----:|:----:|
+| x1 | / |  | \\ |
+| x2 | -> | x2' | + |
+| x3 | /|  | \\ |
+| x4 | -> | x4' | + |
+| x5 | -> | x5' | + |
+
+* `/` means blocked
+* `->` means not blocked
+* `x2'`, `x4'` and `x5'` are the transformed values
