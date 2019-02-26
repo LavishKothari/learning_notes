@@ -19,6 +19,7 @@ URL: https://www.youtube.com/watch?v=1OpAgZvYXLQ&t
   * [filter](#filter)
   * [map](#map)
   * [reduce](#reduce)
+    * [Special reduce functions](#special-reduce-functions)
 
 ## What is a Lambda Expression
 
@@ -461,6 +462,7 @@ It is a non-mutating pipeline. Function composition is a pipeling, you are trans
 ### reduce
 
 * **cuts across the swimlanes**
+* reduce a transform a collection into a single value or it may transform it to a non-stream or a concrete type.
 * reduce takes an initial value
 * reduce on `Stream<T>` takes 2 parameters. The first parameter is of type `T` and the second parameter is a `BiFunction<T, R>`. It returns a `Stream<R>`.
 
@@ -477,3 +479,183 @@ What are swimlanes?
 * `/` means blocked
 * `->` means not blocked
 * `x2'`, `x4'` and `x5'` are the transformed values
+
+#### Special reduce functions
+
+* **sum**
+
+    ```java
+    package devoxx.java8.example;
+
+    import java.util.Arrays;
+    import java.util.List;
+
+    public class Sample {
+        public static void main(String[] args) throws Exception {
+            List<Integer> nums = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+
+            // Given numbers, double the even numbers and total them
+            double sum = nums.parallelStream()
+                    .filter(e -> e % 2 == 0)
+                    .mapToDouble(i -> i * 2.0)
+                    .sum();
+            System.out.println(sum);
+        }
+    }
+    ```
+
+* **collect**
+  * `Collectors.toList()`
+  * `Collectors.toSet`
+  * consider the following code (it is badly written and you should never do this)
+
+```java
+package devoxx.java8.example;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class Sample {
+    public static void main(String[] args) throws Exception {
+        List<Integer> nums = Arrays.asList(1, 2, 3, 4, 5, 1, 2, 3, 4, 5);
+
+        // double the even values and put them in the list
+        List<Integer> doubleOfEvens = new ArrayList<>();
+
+        nums.stream()
+                .filter(i -> i % 2 == 0)
+                .map(i -> i * 2)
+                .forEach(i -> doubleOfEvens.add(i));
+
+        System.out.println(doubleOfEvens); // Don't do this
+    }
+}
+```
+
+* Reasons why the above code is bad
+  * **Mutability is OK, sharing is nice, shared mutability is devil.**
+  * **friends don't let friends do shared mutability.**
+* Better way to do this:
+
+```java
+package devoxx.java8.example;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class Sample {
+    public static void main(String[] args) throws Exception {
+        List<Integer> nums = Arrays.asList(1, 2, 3, 4, 5, 1, 2, 3, 4, 5);
+
+        // double the even values and put them in the list
+        List<Integer> doubleOfEvens = nums.stream()
+                .filter(i -> i % 2 == 0)
+                .map(i -> i * 2)
+                .collect(Collectors.toList());
+
+        System.out.println(doubleOfEvens);
+    }
+}
+
+```
+
+* Illustrating `Collectors.toSet()`
+
+```java
+package devoxx.java8.example;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+public class Sample {
+    public static void main(String[] args) throws Exception {
+        List<Integer> nums = Arrays.asList(1, 2, 3, 4, 5, 1, 2, 3, 4, 5);
+
+        // double the even values and put them in the list
+        Set<Integer> doubleOfEvens = nums.stream()
+                .filter(i -> i % 2 == 0)
+                .map(i -> i * 2)
+                .collect(Collectors.toSet());
+
+        System.out.println(doubleOfEvens);
+    }
+}
+```
+
+* Illustrating `Collectors.toMap()` and `Collectors.groupingBy()`
+
+```java
+package devoxx.java8.example;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+public class Sample {
+    public static void main(String[] args) throws Exception {
+
+        List<Person> people = createPeople();
+        Map<String, Person> map = people.stream()
+                .collect(Collectors.toMap(
+                        person -> person.getName() + "-" + person.getAge(),
+                        person -> person
+                ));
+        System.out.println(map);
+
+        Map<String, List<Person>> nameMap = people.stream()
+                .collect(Collectors.groupingBy(Person::getName));
+        System.out.println(nameMap);
+    }
+
+    private static List<Person> createPeople() {
+        return Arrays.asList(
+                new Person("Sara", 20, Gender.FEMALE),
+                new Person("Sara", 22, Gender.FEMALE),
+                new Person("Bob", 20, Gender.MALE),
+                new Person("Paula", 32, Gender.FEMALE),
+                new Person("Paul", 32, Gender.MALE),
+                new Person("Jack", 2, Gender.MALE),
+                new Person("Jack", 72, Gender.MALE),
+                new Person("Jill", 12, Gender.FEMALE)
+        );
+    }
+
+    private static enum Gender {
+        MALE, FEMALE
+    }
+
+    private static class Person {
+        String name;
+        int age;
+        Gender gender;
+
+        public Person(String name, int age, Gender gender) {
+            this.name = name;
+            this.age = age;
+            this.gender = gender;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public int getAge() {
+            return age;
+        }
+
+        public Gender getGender() {
+            return gender;
+        }
+
+        @Override
+        public String toString() {
+            return "[" + name + " " + age + " " + gender + "]";
+        }
+    }
+}
+```
