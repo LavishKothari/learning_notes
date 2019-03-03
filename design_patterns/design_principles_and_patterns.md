@@ -1,3 +1,27 @@
+* [Design Principles and patterns](#design-principles-and-patterns)
+  * [UML nomenclature](#uml-nomenclature)
+  * [APIE Object oriented features](#apie-object-oriented-features)
+  * [SOLID principles for Object oriented design](#solid-principles-for-object-oriented-design)
+    * [Explanation](#explanation)
+    * [Interface segregation principle](#interface-segregation-principle)
+  * [Design Patterns](#design-patterns)
+    * [Factory pattern](#factory-pattern)
+    * [Strategy Pattern](#strategy-pattern)
+    * [Singleton pattern](#singleton-pattern)
+      * [Implementations](#implementations)
+        * [Eager object creation](#eager-object-creation)
+        * [Lazy object creation](#lazy-object-creation)
+        * [Thread safe lazy creation](#thread-safe-lazy-creation)
+        * [Double checked locking lazy](#double-checked-locking-lazy)
+        * [Using inner static class lazy](#using-inner-static-class-lazy)
+        * [Singletons using enum in Java](#singletons-using-enum-in-java)
+      * [Caution points](#caution-points)
+    * [Decorator pattern](#decorator-pattern)
+    * [Adapter Pattern](#adapter-pattern)
+    * [Facade Pattern](#facade-pattern)
+    * [Proxy Pattern](#proxy-pattern)
+    * [Builder Pattern](#builder-pattern)
+
 # Design Principles and patterns
 
 ## UML nomenclature
