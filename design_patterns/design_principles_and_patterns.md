@@ -21,6 +21,8 @@
     * [Facade Pattern](#facade-pattern)
     * [Proxy Pattern](#proxy-pattern)
     * [Builder Pattern](#builder-pattern)
+    * [Observer Pattern](#observer-pattern)
+    * [Bridge Pattern](#bridge-pattern)
 
 # Design Principles and patterns
 
@@ -557,3 +559,202 @@ You may want to use it because of security or caching
 ### Builder Pattern
 
 See item of Effective Java.
+
+### Observer Pattern
+
+Definition:
+
+**The observer pattern defines a one-to-many dependency between objects so that one object changes state, then all the dependencies are notified.**
+
+* Observer pattern is about moving from poll architecture to push architecture
+* Concept of subscriber - but here subscriber don't poll, rather than that the field/state on which the subscription was there initially, that state change is pushed now to the subscriber. *The subsriber is notified of the state change.*
+* Where there are tons of subscriber, then poll can be really absurd. So here we apply push architecture.
+* **Subject/Observable** is being **observed** by the **subscribers**.
+* Before this subscription can work, all the **subscribers** should **register** themselves to the **Subject/Observable**.
+* When the state of **Subject/Observable** changes the  **subscribers/observers** are **notified**.
+
+Example/Use case:
+
+**Observer pattern is very suitable for a chat kind of application.** Suppose that there are some users who are registered to a chatroom, then whenever some new message/update is done to the chat-room then all the members of that chat-room should be notified. (It should never be the case that the users registered in the chat room are polling on a regular basis to see if there's something new that has happened in the chat-room.)
+
+```java
+package observer.pattern;
+
+public interface Observable<T> {
+    void register(Observer observer);
+
+    void unregister(Observer observer);
+
+    void notifyAllObservers();
+
+    T getState();
+
+    void setState(T state);
+}
+```
+
+```java
+package observer.pattern;
+
+public interface Observer {
+    <T> void update(Observable<T> observable);
+}
+```
+
+```java
+package observer.pattern;
+
+import java.util.HashSet;
+import java.util.Set;
+
+public class ConcreteObservable<T> implements Observable<T> {
+
+    private Set<Observer> observers = new HashSet<>();
+
+    private T state; // we need to observe the state of this object
+
+    @Override
+    public void register(Observer observer) {
+        observers.add(observer);
+    }
+
+    @Override
+    public void unregister(Observer observer) {
+        observers.remove(observer);
+    }
+
+    @Override
+    public void notifyAllObservers() {
+        observers.stream()
+                .forEach(observer -> observer.update(this));
+    }
+
+    @Override
+    public T getState() {
+        return state;
+    }
+
+    @Override
+    public void setState(T newState) {
+        this.state = newState;
+        notifyAllObservers();
+    }
+}
+```
+
+```java
+package observer.pattern;
+
+import java.util.concurrent.atomic.AtomicInteger;
+
+public class ConcreteObserver implements Observer {
+
+    private static final AtomicInteger idGenerator = new AtomicInteger();
+    private final int id;
+
+    public ConcreteObserver() {
+        this.id = idGenerator.incrementAndGet();
+    }
+
+    @Override
+    public <T> void update(Observable<T> observable) {
+        // here you can use observable to get the state that has changed.
+        System.out.println("observer " + id + " is updated.");
+    }
+}
+```
+
+### Bridge Pattern
+
+Definition:
+
+**The intent of the bridge pattern is to decouple an abstraction from it's implementation so that the two can exist/vary independently.**
+
+```java
+public interface Implementor {
+
+}
+
+public class ConcreteImplementorA implements Implementor {
+
+}
+
+public class ConcreteImplementorB implements Implementor {
+
+}
+
+public class ConcreteImplementorC implements Implementor {
+
+}
+
+public abstract class Abstraction {
+    Implementor implementor;
+    // ...
+}
+
+public class ConcreteAbstractionA implements Abstraction {
+
+}
+public class ConcreteAbstractionB implements Abstraction {
+
+}
+```
+
+Each `Abstraction` has-a `Implementor`. So just by designing 5 classes, you can actually have 3*2 = 6 different functionalities. (to avoid class explosion)
+
+Real-time use case:
+
+You have different product (like `Laptop`, `Book`, `Phone`) and you have different ways of displaying these media items - differnt views - `LongView` and `ShortView`.
+
+Your requirement is to take any arbitrary media-resource and combine it with any arbitrary view.
+
+```java
+public interface Product {
+
+}
+
+public class Book implements Product {
+
+}
+
+public class Laptop implements Product {
+
+}
+
+public class Phone implements Product {
+
+}
+
+public abstract class View {
+    Product product;
+    void show();
+}
+
+public class LongView extends View {
+    @Override
+    public void show() {
+        
+    }
+}
+
+public class ShortView extends View {
+    @Override
+    public void show() {
+        
+    }
+}
+  
+```
+
+Suppose we didn't use Bridge-pattern in the above example, we'd have ended up creating 6 different classes which are: 
+
+* `LongViewForBook`
+* `LongViewForLaptop`
+* `LongViewForPhone`
+* `ShortViewForBook`
+* `ShortViewForLaptop`
+* `ShortViewForPhone`
+
+This will get worse if we add more type of views and more products. So Bridge-pattern saved use here.
+
+Bridge-pattern also avoid code-duplication. If you introduce some bug in `LongView` then you will have to update `LongViewForBook`, `LongViewforLaptop` and `LongViewForPhone` if you are not using Bridge-pattern. And if you are using bridge pattern, then you need to change only one class and that is `LongView`.

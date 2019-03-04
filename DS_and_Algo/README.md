@@ -106,6 +106,7 @@
   * [2 Sum](#2-sum)
   * [Closest 3 sum](#closest-3-sum)
   * [4 Sum](#4-sum)
+  * [Find frequency in Array](#find-frequency-in-array)
 * [GeeksForGeeks](#geeksforgeeks)
 * [System Design](#system-design)
   * [Fuzzy String matching](#fuzzy-string-matching)
@@ -155,8 +156,8 @@
 
 * First-In First-Out
 * Usage:
-    * BFS
-    * Priority queues are used in Dijkstras
+  * BFS
+  * Priority queues are used in Dijkstras
 
 ## Binary Tree
 
@@ -724,6 +725,7 @@ class PowerSetIterative {
 This problem is [here](https://www.interviewbit.com/problems/subset/) on interview bit.
 
 Constraints:
+
 * Elements in a subset must be in non-descending order.
 * The solution set must not contain duplicate subsets.
 * Also, the subsets should be sorted in ascending ( lexicographic ) order.
@@ -2987,6 +2989,55 @@ public class IB_4Sum {
         }
     }
 
+}
+```
+
+## Find frequency of elements in array
+
+Given an array with numbers 1 to n, containing duplicates. Find the count of each number in O(n) time and no auxiliary space
+
+```java
+import java.util.Arrays;
+
+/**
+ * Given an array with numbers 1 to n, containing duplicates.
+ * Find the count of each number in O(n) time
+ * and no auxiliary space
+ */
+public class FindFrequency {
+
+    public static void main(String[] args) {
+        int[] arr = new int[]{4, 1, 3, 3, 3, 3, 3, 1, 4, 4, 1};
+        print(arr);
+        new FindFrequency().findFrequency(arr);
+        print(arr);
+    }
+
+    private static void print(int[] arr) {
+        Arrays.stream(arr).forEach(e -> System.out.print(e + " "));
+        System.out.println();
+    }
+
+    public void findFrequency(int[] arr) {
+        int n = arr.length;
+        for (int i = 0; i < n; i++) {
+            if (arr[i] <= 0) continue;
+            int index = arr[i] - 1;
+            while (index >= 0) {
+                if (arr[index] <= 0) {
+                    arr[index]--;
+                    arr[i] = 0;
+                    break;
+                } else {
+                    int newIndex = arr[index] - 1;
+                    arr[index] = -1;
+                    index = newIndex;
+                }
+            }
+        }
+        for (int i = 0; i < n; i++)
+            arr[i] = -arr[i];
+    }
 }
 ```
 
