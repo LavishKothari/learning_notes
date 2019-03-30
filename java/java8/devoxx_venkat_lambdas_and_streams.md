@@ -630,9 +630,9 @@ public class Sample {
     }
 
     private static class Person {
-        String name;
-        int age;
-        Gender gender;
+        private final String name;
+        private final int age;
+        private final Gender gender;
 
         public Person(String name, int age, Gender gender) {
             this.name = name;
