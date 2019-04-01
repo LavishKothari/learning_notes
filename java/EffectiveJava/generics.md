@@ -42,3 +42,9 @@ list.add("hello");
 For a type parameter `T`, you can't write a class literal `T.class`. You can't use `instanceof` to test if an object is of type `T`. And you can't create an array of `T`. But it gets worse. You also can't write class literals for generic types like `List<String>.class`, or test if an object is an `instanceof` `List<String>`, or create an array of `List<String>`.
 
 [Must read article](http://gafter.blogspot.com/2006/11/reified-generics-for-java.html) on ore problems.
+
+## Item 31 - Use bounded wildcards to increase API flexibility
+
+**Generics are invariant**. `List<String>` is not a sub-type of `List<Object>`. `List<String>` can't do everything that a `List<Object>` can do. (Example, in a `List<Object>` you can put any object, but in a `List<String>` you can only put `String` - This is Liskov Substitution Principle)
+
+* **PECS stands for producer- extends , consumer- super**.
