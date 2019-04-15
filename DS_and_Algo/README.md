@@ -3162,7 +3162,7 @@ public class ExpressingSum {
 * Construct PriorityQueue using `PriorityQueue<Person> personPriorityQueue = new PriorityQueue<>((p1, p2) -> p1.getName().compareTo(p2.getName()));`
 * This implementation provides `O(log(n))` time for the enqueuing and dequeuing methods (`offer`, `poll`, `remove` and `add`)
 * If the `PriorityQueue` is of type `Person` and `Person` implements `Comparable<Person>`, at the same time you have provided `Comparator<Person>` while constructing the queue, then the custom `Comparator` provided when constructing the queue will be given the preference over the `Comparable` that `Person` implements.
-* You can have duplicate elements in `PriorityQueue`. During retrieval the ties between duplicate elements are broking arbitrarily.
+* You can have duplicate elements in `PriorityQueue`. During retrieval the ties between duplicate elements are broken arbitrarily.
 
 ```java
 import java.util.PriorityQueue;
@@ -3212,7 +3212,7 @@ public class PriorityQueueExample {
 
         @Override
         public int compareTo(Person p) {
-            return age - p.age;
+            return Integer.compare(age, p.age);
         }
     }
 }
@@ -3394,6 +3394,8 @@ _________________________________
 
 ## floor/ceil operations in a  sorted data structure
 
+`NavigableSet` extends `SortedSet` - both of these are interface.
+`NavigableMap` extends `SortedMap` - both of these are interface.
 _________________________________
 
 ## Signed and unsigned bitwise operators
@@ -3402,30 +3404,42 @@ _________________________________
 
 ## creating copy of a list
 
+```java
+List<String> destination = new ArryaList<>(source);
+```
+
 _________________________________
 
 ## Map - `java.util.Map`
 
 * `TreeMap`
 * `HashMap`
+
 > All hash-based collections assume that an object’s hash value does not change while it is in use as a key in the collection.
+
+Note points:
+
+* You need to define `hashCode()` and `equals()` for hash-based `Map` - `HashMap` and also for hash based `Set` - `HashSet`
+
 _________________________________
 
 ## Set - `java.util.Set`
 
 _________________________________
 
-## BitSet - `java.util.BitSet` 
+## BitSet - `java.util.BitSet`
 
 * Constructors
-    * `BitSet bitSet = new BitSet(1000);` - creates a `BitSet` with `1000` bits. All are set to `false` initially. (You can even do `bitSet.set(1100, true);` - the `BitSet` will expand automatically.)
-	* `BitSet bitSet = new BitSet();` - creates an empty `BitSet` with all bits `false` initially.
+  * `BitSet bitSet = new BitSet(1000);` - creates a `BitSet` with `1000` bits. All are set to `false` initially. (You can even do `bitSet.set(1100, true);` - the `BitSet` will expand automatically.)
+  * `BitSet bitSet = new BitSet();` - creates an empty `BitSet` with all bits `false` initially.
 * Utility methods
-	* `clear(index)` sets the bit at `index` to `false`
-	* `set(index)` sets the bit at `index` to `true`
-	* `set(index, value)` sets the bit at `index` to `value` (value is `boolean`)
-	* `length()` - Returns the "logical size" of this BitSet: the index of the highest set bit in the BitSet plus one. Returns zero if the BitSet contains no set bits.
-	* `flip(int fromIndex, int toIndex)` Sets each bit from the specified fromIndex (inclusive) to the specified toIndex (exclusive) to the complement of its current value.
+  * `clear(index)` sets the bit at `index` to `false`
+  * `set(index)` sets the bit at `index` to `true`
+  * `set(index, value)` sets the bit at `index` to `value` (value is `boolean`)
+  * `length()` - Returns the "logical size" of this `BitSet`: the index of the highest set bit in the `BitSet` plus one. Returns zero if the `BitSet` contains no set bits.
+  * `flip(int fromIndex, int toIndex)` Sets each bit from the specified `fromIndex` (inclusive) to the specified `toIndex` (exclusive) to the complement of its current value.
+* As `BitSet` grow automatically, they can be very handy while running a DFS on a graph to keep track of the visited nodes. In the initial call, you don't need to worry about the size of the `BitSet`. You just need to pass a `new BitSet()`. (If you are keeping track of visited nodes in a separate field of class `GraphNode` itself, then probably you will not need `BitSet` for this same purpose).
+
 _________________________________
 
 ## Stack In Java

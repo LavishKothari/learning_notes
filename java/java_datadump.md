@@ -44,3 +44,22 @@ private static void someMethod(List<? super C> list) {
 ```
 
 * **PECS stands for producer- extends , consumer- super**.
+* `Comparable`, `Comparator`, `Predicate` are all consumers so they should mostly go with `? extends T` instead of simply having `T`
+* `ManagedBlocker`
+* BTrace - [github link](https://github.com/btraceio/btrace)
+* Monitoring libraries in Java - micrometer - adopted by spring-boot (micrometer)
+* When do you get `ConcurrentModificationException`?
+
+## Reading material
+
+* [Java Tools](http://openjdk.java.net/projects/code-tools/)
+* JEPs
+  * [Basic JEP0](http://openjdk.java.net/jeps/0)
+  * [Microbenchmark Suite](https://openjdk.java.net/jeps/230)
+  * [Detailed message to NullPointerException](http://openjdk.java.net/jeps/8220715)
+
+## TODO
+
+* Serialization
+* Clone method
+* ConcurrentModificationException
