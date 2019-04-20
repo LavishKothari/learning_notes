@@ -221,7 +221,13 @@
 
 #### Divide and Conquer
 
+* Merge Sort
+* Counting the number of inversions performed during merge sort.
+
 #### Greedy Algorithms
+
+* The maximum number of meetings that you can attend given the starting and finish time of each meeting (the meetings have overlap).
+  * Greedy solution is to sort the meetings according to their finish time, and pick the first meeting for sure, and then subsequently pick meetings with no overlaps.
 
 #### Dynamic Programming
 
@@ -253,13 +259,12 @@
     * Space complexity = `O(n^2)`
 * Decode Strings [LeetCode394](https://leetcode.com/problems/decode-string/) (good)
 
-
-
 # My custom preparation (DataDump)
 
 ## isPrime
 
 Time complexity = `O(sqrt(n))` if you find whether `n` is prime or not.
+[This](https://stackoverflow.com/questions/54849620/proper-usage-of-parallel-streams-in-java) link is worth looking at.
 
 ```java
 /*
@@ -293,6 +298,11 @@ public class PrimeChecker {
         }
         return true;
     }
+
+    public boolean isPrimeUsingStreams(long n) {
+        return LongStream.rangeClosed(2, (long)Math.sqrt(n))
+                         .noneMatch(i -> n % i == 0);
+    }
 }
 
 ```
@@ -305,7 +315,7 @@ _________________________________
 
 * This will be used to reduce the fraction to the lowest terms.
 * Make sure that the fraction should not have the numerator or denominator as negative.
-    * To be on the safe side, maintain negative and numberator and denominator separately.
+  * To be on the safe side, maintain negative and numberator and denominator separately.
 
 ```java
 /**
